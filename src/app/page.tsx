@@ -1,27 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import Lenis from "@studio-freight/lenis";
 import { HeroScene, AboutScene, ProjectScene, ContactScene } from "@/components/scenes";
 
 export default function Home() {
-  // Initialize Global Smooth Scrolling
-  useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.1, // Gives a snappy, natural native feel
-      wheelMultiplier: 1,
-      touchMultiplier: 1,
-      smoothWheel: true,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    return () => lenis.destroy();
-  }, []);
 
   return (
     <main className="relative bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
