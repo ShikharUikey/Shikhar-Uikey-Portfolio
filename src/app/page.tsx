@@ -8,12 +8,10 @@ export default function Home() {
   // Initialize Global Smooth Scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
+      lerp: 0.1, // Gives a snappy, natural native feel
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
       smoothWheel: true,
-      touchMultiplier: 2,
     });
 
     function raf(time: number) {
