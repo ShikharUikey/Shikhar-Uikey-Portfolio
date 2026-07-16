@@ -1,29 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { animateHeroText } from "@/animations/engine";
 import { heroContent } from "@/content";
 
 export const HeroScene = () => {
   return (
-    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black">
-      {/* Background Image Setup */}
-      <div className="absolute inset-0 z-0">
-        <Image 
-          src="/images/hero-bg.jpg" 
-          alt="Cinematic Background" 
-          fill 
-          priority
-          className="object-cover object-center opacity-80"
-        />
-        {/* Cinematic Gradient Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[var(--color-bg-primary)]"></div>
-      </div>
-
+    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Quote */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none overflow-hidden z-0 w-full text-center mix-blend-overlay opacity-30">
-        <span className="ikigai-quote text-white">
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
+        <span className="ikigai-quote text-[var(--color-bg-secondary)]">
           {heroContent.backgroundQuote}
         </span>
       </div>
@@ -34,13 +20,13 @@ export const HeroScene = () => {
         animate="visible"
         variants={animateHeroText}
       >
-        <h2 className="cursive-accent text-3xl md:text-5xl mb-4 text-[#E5E0D8]">
+        <h2 className="cursive-accent text-3xl md:text-5xl mb-4">
           {heroContent.subheadline}
         </h2>
-        <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-white drop-shadow-lg">
+        <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-[var(--color-text-primary)]">
           {heroContent.headline}
         </h1>
-        <p className="text-xl md:text-2xl font-light text-gray-200">
+        <p className="text-xl md:text-2xl font-light text-[var(--color-text-secondary)]">
           {heroContent.description}
         </p>
       </motion.div>
