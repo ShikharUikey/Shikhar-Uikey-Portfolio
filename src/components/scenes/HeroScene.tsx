@@ -7,40 +7,62 @@ import { heroContent } from "@/content";
 export const HeroScene = () => {
   return (
     <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background Quote */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
-        <span className="ikigai-quote text-[var(--color-bg-secondary)]">
-          {heroContent.backgroundQuote}
-        </span>
+      {/* Minimal vertical text on the side (like Blackbook screenshot) */}
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-text-secondary)] hidden md:block opacity-50 z-10">
+        Shikhar Uikey — Portfolio
       </div>
 
+      {/* Main Typography (Editorial Italic Style) */}
       <motion.div 
-        className="relative z-10 text-center max-w-4xl px-6"
+        className="relative z-10 text-left w-full max-w-7xl mx-auto px-6 md:px-24"
         initial="hidden"
         animate="visible"
         variants={animateHeroText}
       >
-        <h2 className="cursive-accent text-3xl md:text-5xl mb-4">
+        <h2 className="italic font-semibold text-2xl md:text-4xl mb-2 text-[var(--color-text-secondary)]">
           {heroContent.subheadline}
         </h2>
-        <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-[var(--color-text-primary)]">
+        <h1 className="italic font-black text-6xl md:text-[10rem] leading-[0.9] tracking-tighter mb-8 text-[var(--color-text-primary)]">
           {heroContent.headline}
         </h1>
-        <p className="text-xl md:text-2xl font-light text-[var(--color-text-secondary)]">
+        <p className="text-lg md:text-xl font-light text-[var(--color-text-secondary)] max-w-2xl">
           {heroContent.description}
         </p>
       </motion.div>
       
+      {/* Ikigai Quote (Bottom Left) */}
+      <motion.div 
+        className="absolute bottom-10 left-6 md:bottom-16 md:left-24 z-10"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 1.5 }}
+      >
+        <div className="flex flex-col gap-1 border-l-4 border-[var(--color-accent-warm)] pl-4">
+          <span className="text-xs font-bold tracking-[0.2em] uppercase text-[var(--color-text-secondary)]">
+            Philosophy
+          </span>
+          <span className="text-3xl md:text-4xl font-black mt-2 text-[var(--color-text-primary)]">
+            {heroContent.backgroundQuote}
+          </span>
+          <span className="text-sm italic text-[var(--color-text-secondary)] mt-1">
+            "{heroContent.quoteTranslation}"
+          </span>
+        </div>
+      </motion.div>
+
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.6 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-[10vh] flex flex-col items-center gap-4 z-10"
+        className="absolute bottom-[5vh] right-6 md:right-16 flex flex-col items-center gap-4 z-10"
       >
-        <span className="text-xs tracking-[0.3em] uppercase font-bold text-[var(--color-accent-warm)]">
+        <span 
+          className="text-[10px] tracking-[0.3em] uppercase font-bold text-[var(--color-text-primary)] rotate-180"
+          style={{ writingMode: 'vertical-rl' }}
+        >
           {heroContent.cta}
         </span>
-        <div className="w-[1px] h-24 bg-gradient-to-b from-[var(--color-accent-warm)] to-transparent"></div>
+        <div className="w-[1px] h-16 bg-gradient-to-b from-[var(--color-text-primary)] to-transparent"></div>
       </motion.div>
     </section>
   );
