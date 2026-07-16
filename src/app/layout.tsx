@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { Navbar } from "@/components/ui/Navbar";
+import { Preloader } from "@/components/ui/Preloader";
 import "./globals.css";
 
 const inter = Inter({ 
@@ -20,8 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} font-sans antialiased selection:bg-[#E87A5D] selection:text-white`}
+        className={`${inter.variable} font-sans antialiased selection:bg-[#E87A5D] selection:text-white cursor-none`}
       >
+        <Preloader />
+        <CustomCursor />
+        <Navbar />
         {children}
       </body>
     </html>
