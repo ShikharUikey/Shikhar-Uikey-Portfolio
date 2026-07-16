@@ -7,17 +7,19 @@ export const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial loading sequence for cinematic effect
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // 2 seconds
-
-    // Prevent scrolling while loading
+    // Prevent scrolling while loading sequence happens
     document.body.style.overflow = "hidden";
-    
+
+    // Animation takes 1.5s delay + 1s duration = 2.5s total.
+    // Give it a tiny bit of buffer, then restore scrolling and unmount.
+    const timer = setTimeout(() => {
+      document.body.style.overflow = "";
+      setIsLoading(false);
+    }, 2600);
+
     return () => {
       clearTimeout(timer);
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
     };
   }, []);
 
