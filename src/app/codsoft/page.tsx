@@ -16,7 +16,7 @@ export default function CodsoftPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-32 pb-24">
+    <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-20 md:pt-32 pb-16 md:pb-24">
       <div className="max-w-6xl mx-auto w-full px-6 relative z-10">
         
         {/* Back Button */}
@@ -44,7 +44,7 @@ export default function CodsoftPage() {
           <span className="cursive-accent text-3xl md:text-4xl block text-[var(--color-accent-matcha)] mb-4">
             AI & Machine Learning
           </span>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 drop-shadow-lg tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 drop-shadow-lg tracking-tight">
             CODSOFT <br className="hidden md:block"/> INTERNSHIP
           </h1>
           <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] max-w-3xl leading-relaxed">
@@ -61,7 +61,7 @@ export default function CodsoftPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="group relative rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex flex-col md:flex-row p-8 md:p-12 gap-8 shadow-2xl transition-all duration-500 hover:border-[var(--color-accent-matcha)]"
+              className="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex flex-col md:flex-row p-5 sm:p-8 md:p-12 gap-6 md:gap-8 shadow-2xl transition-all duration-500 hover:border-[var(--color-accent-matcha)]"
             >
               {/* Subtle background glow */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r from-[var(--color-accent-matcha)] to-transparent pointer-events-none"></div>
@@ -72,15 +72,15 @@ export default function CodsoftPage() {
               </div>
 
               <div className="flex-1 flex flex-col justify-center relative z-10">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-matcha)] transition-colors duration-300">
+                <h3 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-matcha)] transition-colors duration-300">
                   {project.title}
                 </h3>
-                <p className="text-lg text-[var(--color-text-secondary)] mb-8 leading-relaxed">
+                <p className="text-base md:text-lg text-[var(--color-text-secondary)] mb-6 md:mb-8 leading-relaxed">
                   {project.description}
                 </p>
 
                 {/* Tech Stack Tags */}
-                <div className="flex flex-wrap gap-3 mb-10">
+                <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 md:mb-10">
                   {project.tech?.map((techItem, tIdx) => (
                     <span 
                       key={tIdx} 
@@ -96,7 +96,7 @@ export default function CodsoftPage() {
                   href={project.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 self-start px-8 py-4 bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] rounded-full font-bold uppercase tracking-wider text-sm hover:scale-105 hover:bg-[var(--color-accent-matcha)] transition-all shadow-lg"
+                  className="inline-flex items-center gap-2 sm:gap-3 self-start px-6 py-3 md:px-8 md:py-4 bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] rounded-full font-bold uppercase tracking-wider text-xs sm:text-sm hover:scale-105 hover:bg-[var(--color-accent-matcha)] transition-all shadow-lg"
                 >
                   <span>View on GitHub</span>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">

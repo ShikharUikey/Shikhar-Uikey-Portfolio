@@ -14,7 +14,7 @@ export default function GalleryPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-32 pb-24">
+    <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-20 md:pt-32 pb-16 md:pb-24">
       <div className="max-w-7xl mx-auto w-full px-6 relative z-10">
         
         {/* Navigation */}
@@ -37,21 +37,21 @@ export default function GalleryPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-24 text-center border-b border-[var(--color-border)] pb-16"
+          className="mb-12 md:mb-24 text-center border-b border-[var(--color-border)] pb-10 md:pb-16"
         >
           <span className="cursive-accent text-3xl block text-[var(--color-accent-matcha)] mb-6">
             The Digital Gallery
           </span>
-          <h1 className="text-6xl md:text-8xl font-black mb-8 drop-shadow-xl tracking-tighter uppercase">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 md:mb-8 drop-shadow-xl tracking-tighter uppercase">
             EXHIBITION 02
           </h1>
-          <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl md:text-2xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed px-2">
             A curated space of ephemeral moments, guided by the timeless wisdom of Ikigai.
           </p>
         </motion.div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24">
           {items.map((item, idx) => (
             <motion.div
               key={idx}
@@ -67,7 +67,7 @@ export default function GalleryPage() {
                   <img 
                     src={item.url} 
                     alt={`Gallery exhibition piece ${idx + 1}`}
-                    className="w-full h-auto aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                    className="w-full h-auto aspect-[3/4] sm:aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
                   />
                 ) : (
                   <video 
@@ -76,7 +76,7 @@ export default function GalleryPage() {
                     loop 
                     muted 
                     playsInline
-                    className="w-full h-auto aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                    className="w-full h-auto aspect-[3/4] sm:aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
                   />
                 )}
                 
@@ -86,10 +86,10 @@ export default function GalleryPage() {
 
               {/* Typography / Quote */}
               <div className="flex flex-col items-center text-center px-4">
-                <h3 className="text-3xl md:text-4xl font-serif text-[var(--color-text-primary)] mb-4 tracking-widest font-light">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[var(--color-text-primary)] mb-3 md:mb-4 tracking-widest font-light">
                   {item.quoteJP}
                 </h3>
-                <p className="text-lg text-[var(--color-accent-matcha)] italic font-light tracking-wide uppercase">
+                <p className="text-sm sm:text-lg text-[var(--color-accent-matcha)] italic font-light tracking-wide uppercase">
                   "{item.quoteEN}"
                 </p>
                 

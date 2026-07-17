@@ -94,6 +94,30 @@ export const projectsContent = {
           url: "/images/gallery/video1.mp4",
           quoteJP: "そのままでいいがな",
           quoteEN: "Keep going; don't change your path."
+        },
+        {
+          type: "video",
+          url: "/images/gallery/video2.mp4",
+          quoteJP: "一期一会",
+          quoteEN: "One life, one encounter."
+        },
+        {
+          type: "video",
+          url: "/images/gallery/video3.mp4",
+          quoteJP: "花鳥風月",
+          quoteEN: "The beauty of nature."
+        },
+        {
+          type: "video",
+          url: "/images/gallery/video4.mp4",
+          quoteJP: "無常",
+          quoteEN: "Nothing lasts forever."
+        },
+        {
+          type: "video",
+          url: "/images/gallery/video5.mp4",
+          quoteJP: "侘寂",
+          quoteEN: "Beauty in imperfection."
         }
       ]
     },

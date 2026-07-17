@@ -35,7 +35,7 @@ export const HeroScene = () => {
         <h2 className="italic font-semibold text-2xl md:text-4xl mb-2 text-gray-300">
           {heroContent.subheadline}
         </h2>
-        <h1 className="italic font-black text-6xl md:text-[10rem] leading-[0.9] tracking-tighter mb-8 text-white drop-shadow-lg">
+        <h1 className="italic font-black text-4xl sm:text-6xl md:text-[10rem] leading-[0.9] tracking-tighter mb-6 md:mb-8 text-white drop-shadow-lg">
           {heroContent.headline}
         </h1>
         <p className="text-lg md:text-xl font-light text-gray-300 max-w-2xl">
@@ -54,7 +54,7 @@ export const HeroScene = () => {
           <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-400">
             Philosophy
           </span>
-          <span className="text-3xl md:text-4xl font-black mt-2 text-white">
+          <span className="text-2xl md:text-4xl font-black mt-2 text-white">
             {heroContent.backgroundQuote}
           </span>
           <span className="text-sm italic text-gray-400 mt-1">

@@ -46,7 +46,7 @@ const ProjectCard = ({ project }: { project: any }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`focus-item group relative h-[500px] rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-8 border border-[var(--color-border)] shadow-xl block ${project.link ? 'cursor-pointer' : 'cursor-default'}`}
+      className={`focus-item group relative h-[400px] sm:h-[450px] md:h-[500px] rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl block ${project.link ? 'cursor-pointer' : 'cursor-default'}`}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-transparent opacity-90 z-10 transition-opacity duration-500 group-hover:opacity-60"></div>
       
@@ -71,15 +71,15 @@ const ProjectCard = ({ project }: { project: any }) => {
         <span className="cursive-accent text-2xl mb-2 block text-[var(--color-accent-matcha)]">
           {project.id} / {project.category}
         </span>
-        <h3 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4 drop-shadow-md">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] mb-2 sm:mb-4 drop-shadow-md">
           {project.title}
         </h3>
-        <p className="text-[var(--color-text-secondary)]">
+        <p className="text-sm sm:text-base text-[var(--color-text-secondary)] line-clamp-2 sm:line-clamp-none">
           {project.description}
         </p>
 
         {((project.subProjects && project.subProjects.length > 0) || (project.galleryItems && project.galleryItems.length > 0)) && (
-          <div className="mt-6 flex flex-col items-start gap-4">
+          <div className="mt-4 sm:mt-6 flex flex-col items-start gap-3 sm:gap-4">
             {project.subProjects && project.subProjects.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {project.subProjects.map((sub: { title: string; link: string }, idx: number) => (

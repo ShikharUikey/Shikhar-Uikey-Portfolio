@@ -24,14 +24,14 @@ export const AboutScene = () => {
   return (
     <section 
       ref={containerRef}
-      className="cinematic-section bg-[var(--color-bg-primary)] border-y border-[var(--color-border)] min-h-[120vh] flex items-center relative"
+      className="cinematic-section bg-[var(--color-bg-primary)] border-y border-[var(--color-border)] min-h-screen md:min-h-[120vh] flex items-center relative"
     >
-      <div className="max-w-6xl mx-auto w-full p-10 md:p-16 relative z-10 flex flex-col md:flex-row items-center gap-16">
+      <div className="max-w-6xl mx-auto w-full p-4 md:p-16 relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-16">
         
         {/* Interactive Image Overlay with Scroll Parallax */}
         <motion.div 
           style={{ y: yImage, opacity: opacityImage }}
-          className="relative w-full md:w-1/2 h-[600px] group"
+          className="relative w-full md:w-1/2 h-[350px] sm:h-[450px] md:h-[600px] group"
         >
           {/* Glassmorphic/Blurred Border Effect container */}
           <div className="absolute inset-0 z-10 pointer-events-none rounded-3xl border border-white/20 shadow-[inset_0_0_40px_rgba(250,249,246,0.8)] mix-blend-overlay"></div>
@@ -61,7 +61,7 @@ export const AboutScene = () => {
         <div className="w-full md:w-1/2">
           <motion.h3 
             style={{ y: yText, opacity: opacityText }}
-            className="italic font-black text-4xl md:text-6xl mb-10 text-left text-[var(--color-text-primary)] tracking-tight"
+            className="italic font-black text-3xl md:text-6xl mb-6 md:mb-10 text-left text-[var(--color-text-primary)] tracking-tight"
           >
             {aboutContent.sectionTitle}
           </motion.h3>
