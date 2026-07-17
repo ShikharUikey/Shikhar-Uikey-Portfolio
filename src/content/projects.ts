@@ -69,8 +69,15 @@ export const projectsContent = {
       category: "Cinematic",
       title: "The Digital Gallery",
       description: "A premium WebGL exhibition space designed to showcase high-end photography.",
+      image: "/images/gallery.jpg",
       imagePlaceholder: "bg-[#E5E0D8]",
       galleryItems: [
+        {
+          type: "photo",
+          url: "/images/gallery/photo4.jpg",
+          quoteJP: "木漏れ日",
+          quoteEN: "Sunlight filtering through trees."
+        },
         {
           type: "photo",
           url: "/images/gallery/photo1.jpg",

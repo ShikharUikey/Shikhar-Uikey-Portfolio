@@ -17,14 +17,16 @@ export const experienceContent = {
       role: "Artificial Intelligence Intern",
       company: "CodSoft",
       period: "Jun 2024 - Present",
-      description: "Successfully completed virtual internship focused on Artificial Intelligence and Machine Learning model creation."
+      description: "Successfully completed virtual internship focused on Artificial Intelligence and Machine Learning model creation.",
+      url: "https://www.codsoft.in/"
     },
     {
       id: "02",
       role: "Social Media Executive Intern",
       company: "Scratchly",
       period: "May 2024 - Present",
-      description: "Contributing to content planning, audience engagement, and brand-building strategies across platforms. Gained practical exposure to startup operations and client collaboration."
+      description: "Contributing to content planning, audience engagement, and brand-building strategies across platforms. Gained practical exposure to startup operations and client collaboration.",
+      url: "https://www.linkedin.com/company/scratchly/"
     },
     {
       id: "03",
