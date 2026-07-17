@@ -17,7 +17,7 @@ const ProjectCard = ({ project }: { project: any }) => {
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -36,7 +36,7 @@ const ProjectCard = ({ project }: { project: any }) => {
     y.set(0);
   };
 
-  const Component = project.link ? motion.a : motion.div;
+  const Component: any = project.link ? motion.a : motion.div;
 
   return (
     <Component 
