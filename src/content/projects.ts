@@ -4,6 +4,14 @@ export interface Project {
   title: string;
   description: string;
   imagePlaceholder: string;
+  link?: string;
+  image?: string;
+  subProjects?: { 
+    title: string; 
+    link: string;
+    description?: string;
+    tech?: string[];
+  }[];
 }
 
 export const projectsContent = {
@@ -12,10 +20,43 @@ export const projectsContent = {
   projects: [
     {
       id: "01",
-      category: "Case Study",
-      title: "AI Vision System",
-      description: "Combining computer vision with cinematic aesthetics for real-time video processing.",
-      imagePlaceholder: "bg-[#D3CDC4]"
+      category: "AI & Machine Learning",
+      title: "CODSOFT PROJECTS",
+      description: "A collection of 5 distinct AI/ML and Python applications built during my Artificial Intelligence Internship at CodSoft.",
+      imagePlaceholder: "bg-[#161b22]",
+      image: "/images/codsoft.jpg",
+      subProjects: [
+        { 
+          title: "Rule-Based Chatbot", 
+          link: "https://github.com/ShikharUikey/CODSOFT-01.git",
+          description: "A Python GUI-based chatbot built with Tkinter featuring predefined rules, pattern matching, and an interactive dark-themed UI.",
+          tech: ["Python", "Tkinter", "GUI", "Pattern Matching"]
+        },
+        { 
+          title: "Tic Tac Toe AI", 
+          link: "https://github.com/ShikharUikey/CODSOFT-02.git",
+          description: "An unbeatable Tic Tac Toe game developed with an intelligent opponent powered by the Minimax algorithm.",
+          tech: ["Python", "Minimax Algorithm", "Game Theory", "Tkinter"]
+        },
+        { 
+          title: "Image Captioning", 
+          link: "https://github.com/ShikharUikey/CODSOFT-03.git",
+          description: "An AI vision model capable of automatically generating natural language captions for input images.",
+          tech: ["Python", "Deep Learning", "Computer Vision", "NLP"]
+        },
+        { 
+          title: "Product Recommendation", 
+          link: "https://github.com/ShikharUikey/CODSOFT-04.git",
+          description: "A machine learning system that suggests products to users based on ratings, prices, and intelligent scoring algorithms.",
+          tech: ["Python", "Pandas", "Streamlit", "Machine Learning"]
+        },
+        { 
+          title: "Face Detection AI", 
+          link: "https://github.com/ShikharUikey/CODSOFT-05.git",
+          description: "Real-time human face detection application using OpenCV Haar Cascade Classifiers for live webcam feeds.",
+          tech: ["Python", "OpenCV", "Haar Cascades", "Computer Vision"]
+        }
+      ]
     },
     {
       id: "02",
@@ -23,6 +64,22 @@ export const projectsContent = {
       title: "The Digital Gallery",
       description: "A premium WebGL exhibition space designed to showcase high-end photography.",
       imagePlaceholder: "bg-[#E5E0D8]"
+    },
+    {
+      id: "03",
+      category: "Landing Page",
+      title: "iQOO Neo 7",
+      description: "A high-performance promotional landing page built for the iQOO Neo 7 smartphone launch.",
+      imagePlaceholder: "bg-[#111111]",
+      link: "https://iqoo-neo7-landing-page.vercel.app/",
+      image: "/images/iqoo.jpg"
+    },
+    {
+      id: "04",
+      category: "Web Application",
+      title: "Directors Match",
+      description: "An AI-powered cinematic location scouting platform that helps filmmakers discover perfect shooting locations using intelligent reference-image matching.",
+      imagePlaceholder: "bg-[#1A1A1A]"
     }
   ] as Project[]
 };

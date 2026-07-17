@@ -46,8 +46,8 @@ export const AboutScene = () => {
             />
             
             {/* Japanese Text Overlay */}
-            <div className="absolute top-8 right-8 z-20 mix-blend-difference pointer-events-none">
-              <span className="text-white text-5xl font-black opacity-80" style={{ writingMode: 'vertical-rl' }}>
+            <div className="absolute top-8 left-8 z-20 pointer-events-none drop-shadow-md">
+              <span className="text-white text-5xl tracking-[0.2em] opacity-90" style={{ fontFamily: '"Naganoshi", sans-serif', writingMode: 'vertical-rl' }}>
                 創造者
               </span>
             </div>

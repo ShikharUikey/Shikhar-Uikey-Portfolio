@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroScene, AboutScene, ProjectScene, ContactScene } from "@/components/scenes";
+import { HeroScene, AboutScene, ExperienceScene, ProjectScene, ContactScene } from "@/components/scenes";
 
 export default function Home() {
 
@@ -16,6 +16,8 @@ export default function Home() {
       <HeroScene />
       
       <AboutScene />
+      
+      <ExperienceScene />
       
       <ProjectScene />
       

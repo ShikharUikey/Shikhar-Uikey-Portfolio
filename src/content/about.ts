@@ -1,9 +1,7 @@
 export const aboutContent = {
   sectionTitle: "Who Am I?",
   paragraphs: [
-    "I'm Shikhar Uikey, a BCA student, developer, and creative problem solver passionate about building digital experiences that blend technology with storytelling.",
-    "My interests span AI, full-stack web development, UI/UX design, cinematography, and content creation. Whether I'm developing a web application, designing intuitive interfaces, or producing cinematic visuals, I focus on creating solutions that are both functional and visually engaging.",
-    "I enjoy turning ideas into real products—from concept and research to design, development, and deployment. Currently, I'm exploring Artificial Intelligence and modern web technologies, with the goal of creating impactful software that solves real-world problems.",
-    "Outside of coding, you'll often find me behind a camera, editing videos, experimenting with design, or brainstorming the next ambitious project."
+    "I'm Shikhar Uikey, a developer and visual storyteller who thrives at the intersection of code and cinematography. I build full-stack digital experiences that are not only functional, but visually captivating.",
+    "When I'm not architecting web applications, you can find me behind a camera lens, experimenting with UI/UX design, or exploring the frontiers of Artificial Intelligence."
   ]
 };

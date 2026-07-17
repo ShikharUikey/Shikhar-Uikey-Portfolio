@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { animateSectionFadeUp } from "@/animations/engine";
 import { projectsContent } from "@/content";
 import React from "react";
+import Link from "next/link";
 
 // Sub-component for Advanced Parallax Card
 const ProjectCard = ({ project }: { project: any }) => {
@@ -35,12 +36,17 @@ const ProjectCard = ({ project }: { project: any }) => {
     y.set(0);
   };
 
+  const Component = project.link ? motion.a : motion.div;
+
   return (
-    <motion.div 
+    <Component 
+      href={project.link}
+      target={project.link ? "_blank" : undefined}
+      rel={project.link ? "noopener noreferrer" : undefined}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="focus-item group relative h-[500px] rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-8 cursor-pointer border border-[var(--color-border)] shadow-xl"
+      className={`focus-item group relative h-[500px] rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-8 border border-[var(--color-border)] shadow-xl block ${project.link ? 'cursor-pointer' : 'cursor-default'}`}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-transparent opacity-90 z-10 transition-opacity duration-500 group-hover:opacity-60"></div>
       
@@ -48,7 +54,15 @@ const ProjectCard = ({ project }: { project: any }) => {
       <motion.div 
         style={{ translateZ: -50 }}
         className={`absolute inset-0 ${project.imagePlaceholder} z-0 transition-transform duration-700 group-hover:scale-110`}
-      ></motion.div>
+      >
+        {project.image && (
+          <img 
+            src={project.image} 
+            alt={project.title}
+            className="w-full h-full object-cover opacity-60"
+          />
+        )}
+      </motion.div>
       
       <motion.div 
         style={{ translateZ: 50 }}
@@ -63,8 +77,41 @@ const ProjectCard = ({ project }: { project: any }) => {
         <p className="text-[var(--color-text-secondary)]">
           {project.description}
         </p>
+
+        {project.subProjects && project.subProjects.length > 0 && (
+          <div className="mt-6 flex flex-col items-start gap-4">
+            <div className="flex flex-wrap gap-3">
+              {project.subProjects.map((sub: { title: string; link: string }, idx: number) => (
+                <a
+                  key={idx}
+                  href={sub.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-bg-primary)]/80 backdrop-blur-sm border border-[var(--color-border)] rounded-full text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-accent-matcha)] hover:text-black hover:border-transparent hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                >
+                  <span>{sub.title}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+            
+            {project.id === "01" && (
+              <Link 
+                href="/codsoft" 
+                className="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] rounded-full font-bold hover:bg-[var(--color-accent-matcha)] hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+              >
+                <span>View Showcase Page ✨</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            )}
+          </div>
+        )}
       </motion.div>
-    </motion.div>
+    </Component>
   );
 };
 

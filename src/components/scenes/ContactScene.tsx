@@ -30,9 +30,9 @@ export const ContactScene = () => {
         </div>
         
         <div className="flex gap-6 md:justify-center text-sm font-medium tracking-widest uppercase text-[var(--color-text-secondary)]">
-          <a href="#" className="hover:text-[var(--color-accent-warm)] transition-colors">Instagram</a>
-          <a href="#" className="hover:text-[var(--color-accent-warm)] transition-colors">LinkedIn</a>
-          <a href="#" className="hover:text-[var(--color-accent-warm)] transition-colors">GitHub</a>
+          <a href="https://www.instagram.com/shikhar__uikey/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent-warm)] transition-colors">Instagram</a>
+          <a href="https://www.linkedin.com/in/shikharuikey/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent-warm)] transition-colors">LinkedIn</a>
+          <a href="https://github.com/ShikharUikey" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent-warm)] transition-colors">GitHub</a>
         </div>
 
         <div className="flex md:justify-end text-sm text-[var(--color-text-secondary)] font-light">
