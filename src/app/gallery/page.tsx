@@ -1,17 +1,31 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { projectsContent } from "@/content";
 import Link from "next/link";
 
 export default function GalleryPage() {
   const galleryProject = projectsContent.projects.find(p => p.id === "02");
   const items = galleryProject?.galleryItems || [];
+  
+  const [selectedItem, setSelectedItem] = useState<{type: string, url: string, quoteJP: string, quoteEN: string} | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedItem]);
 
   return (
     <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-20 md:pt-32 pb-16 md:pb-24">
@@ -62,7 +76,10 @@ export default function GalleryPage() {
               className={`flex flex-col ${idx % 2 !== 0 ? 'md:mt-32' : ''}`}
             >
               {/* Media Container */}
-              <div className="relative group overflow-hidden rounded-sm bg-[#111] shadow-2xl mb-8 border border-[var(--color-border)]">
+              <div 
+                className="relative group overflow-hidden rounded-sm bg-[#111] shadow-2xl mb-8 border border-[var(--color-border)] cursor-pointer"
+                onClick={() => setSelectedItem(item as any)}
+              >
                 {item.type === "photo" ? (
                   <img 
                     src={item.url} 
@@ -101,6 +118,65 @@ export default function GalleryPage() {
         </div>
         
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-12 cursor-pointer"
+            onClick={() => setSelectedItem(null)}
+          >
+            {/* Close Button */}
+            <button 
+              className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-white transition-colors z-[60]"
+              onClick={() => setSelectedItem(null)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 md:w-10 md:h-10">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Modal Content Container */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-7xl w-full max-h-[90vh] flex flex-col items-center justify-center cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {selectedItem.type === "photo" ? (
+                <img 
+                  src={selectedItem.url} 
+                  alt="Gallery Preview"
+                  className="max-w-full max-h-[75vh] object-contain shadow-2xl rounded-sm"
+                />
+              ) : (
+                <video 
+                  src={selectedItem.url} 
+                  autoPlay 
+                  controls 
+                  playsInline
+                  className="max-w-full max-h-[75vh] object-contain shadow-2xl rounded-sm"
+                />
+              )}
+              
+              {/* Quote below the media preview */}
+              <div className="mt-8 text-center px-4">
+                <h3 className="text-2xl md:text-3xl font-serif text-[var(--color-text-primary)] mb-2 tracking-widest font-light">
+                  {selectedItem.quoteJP}
+                </h3>
+                <p className="text-sm md:text-base text-[var(--color-accent-matcha)] italic font-light tracking-wide uppercase">
+                  "{selectedItem.quoteEN}"
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
