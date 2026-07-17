@@ -12,6 +12,12 @@ export interface Project {
     description?: string;
     tech?: string[];
   }[];
+  galleryItems?: {
+    type: "photo" | "video";
+    url: string;
+    quoteJP: string;
+    quoteEN: string;
+  }[];
 }
 
 export const projectsContent = {
@@ -63,7 +69,33 @@ export const projectsContent = {
       category: "Cinematic",
       title: "The Digital Gallery",
       description: "A premium WebGL exhibition space designed to showcase high-end photography.",
-      imagePlaceholder: "bg-[#E5E0D8]"
+      imagePlaceholder: "bg-[#E5E0D8]",
+      galleryItems: [
+        {
+          type: "photo",
+          url: "/images/gallery/photo1.jpg",
+          quoteJP: "いまここ",
+          quoteEN: "Here, now."
+        },
+        {
+          type: "photo",
+          url: "/images/gallery/photo2.jpg",
+          quoteJP: "しあわせはいつも自分の心がきめる",
+          quoteEN: "Happiness is always determined by your heart."
+        },
+        {
+          type: "photo",
+          url: "/images/gallery/photo3.jpg",
+          quoteJP: "七転び八起き",
+          quoteEN: "Fall seven times, rise eight."
+        },
+        {
+          type: "video",
+          url: "/images/gallery/video1.mp4",
+          quoteJP: "そのままでいいがな",
+          quoteEN: "Keep going; don't change your path."
+        }
+      ]
     },
     {
       id: "03",
