@@ -30,14 +30,18 @@ export const AboutScene = () => {
         
         {/* Interactive Image Overlay with Scroll Parallax */}
         <motion.div 
-          style={{ y: yImage, opacity: opacityImage }}
+          style={{ 
+            y: yImage, 
+            opacity: opacityImage,
+            maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)"
+          }}
           className="relative w-full md:w-1/2 h-[350px] sm:h-[450px] md:h-[600px] group"
         >
           {/* Glassmorphic/Blurred Border Effect container */}
-          <div className="absolute inset-0 z-10 pointer-events-none rounded-3xl border border-white/20 shadow-[inset_0_0_40px_rgba(250,249,246,0.8)] mix-blend-overlay"></div>
+          <div className="absolute inset-0 z-10 pointer-events-none rounded-3xl border border-white/10 shadow-[inset_0_0_40px_rgba(255,255,255,0.05)] mix-blend-overlay"></div>
           
-          <div className="relative w-full h-full rounded-3xl overflow-hidden" 
-               style={{ maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)" }}>
+          <div className="relative w-full h-full rounded-3xl overflow-hidden">
             <Image 
               src="/images/about-me.jpg" 
               alt="Shikhar Uikey"
@@ -47,13 +51,13 @@ export const AboutScene = () => {
             
             {/* Japanese Text Overlay */}
             <div className="absolute top-8 left-8 z-20 pointer-events-none drop-shadow-md">
-              <span className="text-white text-5xl tracking-[0.2em] opacity-90" style={{ fontFamily: '"Naganoshi", sans-serif', writingMode: 'vertical-rl' }}>
+              <span className="text-white text-5xl tracking-[0.5em] opacity-90" style={{ fontFamily: '"Naganoshi", sans-serif', writingMode: 'vertical-rl' }}>
                 創造者
               </span>
             </div>
             
             {/* Dark gradient at bottom to blend image */}
-            <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[var(--color-bg-primary)] to-transparent opacity-50"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[var(--color-bg-primary)] via-[var(--color-bg-primary)]/80 to-transparent"></div>
           </div>
         </motion.div>
 
