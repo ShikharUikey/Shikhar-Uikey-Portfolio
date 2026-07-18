@@ -15,10 +15,10 @@ export const HeroScene = () => {
           alt="Cinematic Background" 
           fill 
           priority
-          className="object-cover object-center opacity-70"
+          className="object-cover object-center opacity-90"
         />
         {/* Cinematic Gradient Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-black/40 to-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-black/20 to-transparent"></div>
       </div>
       {/* Minimal vertical text on the side */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-xs font-bold tracking-[0.3em] uppercase text-white/50 hidden md:block z-10">
