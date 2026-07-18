@@ -9,6 +9,7 @@ export interface Project {
   subProjects?: { 
     title: string; 
     link: string;
+    linkedinUrl?: string;
     description?: string;
     tech?: string[];
   }[];
@@ -35,30 +36,35 @@ export const projectsContent = {
         { 
           title: "Rule-Based Chatbot", 
           link: "https://github.com/ShikharUikey/CODSOFT-01.git",
+          linkedinUrl: "https://www.linkedin.com/posts/shikharuikey_codsoft-artificialintelligence-python-ugcPost-7475905080949379073-qxS4/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGjy4ikBwIREJ3SanHnUVY_osXwf58RGoh0",
           description: "A Python GUI-based chatbot built with Tkinter featuring predefined rules, pattern matching, and an interactive dark-themed UI.",
           tech: ["Python", "Tkinter", "GUI", "Pattern Matching"]
         },
         { 
           title: "Tic Tac Toe AI", 
           link: "https://github.com/ShikharUikey/CODSOFT-02.git",
+          linkedinUrl: "https://www.linkedin.com/posts/shikharuikey_codsoft-artificialintelligence-python-ugcPost-7475905758107164674-P_Nb/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGjy4ikBwIREJ3SanHnUVY_osXwf58RGoh0",
           description: "An unbeatable Tic Tac Toe game developed with an intelligent opponent powered by the Minimax algorithm.",
           tech: ["Python", "Minimax Algorithm", "Game Theory", "Tkinter"]
         },
         { 
           title: "Image Captioning", 
           link: "https://github.com/ShikharUikey/CODSOFT-03.git",
+          linkedinUrl: "https://www.linkedin.com/posts/shikharuikey_codsoft-artificialintelligence-python-ugcPost-7475922260541800448-TUbm/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGjy4ikBwIREJ3SanHnUVY_osXwf58RGoh0",
           description: "An AI vision model capable of automatically generating natural language captions for input images.",
           tech: ["Python", "Deep Learning", "Computer Vision", "NLP"]
         },
         { 
           title: "Product Recommendation", 
           link: "https://github.com/ShikharUikey/CODSOFT-04.git",
+          linkedinUrl: "https://www.linkedin.com/posts/shikharuikey_codsoft-artificialintelligence-python-ugcPost-7475923470976196609-NPVU/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGjy4ikBwIREJ3SanHnUVY_osXwf58RGoh0",
           description: "A machine learning system that suggests products to users based on ratings, prices, and intelligent scoring algorithms.",
           tech: ["Python", "Pandas", "Streamlit", "Machine Learning"]
         },
         { 
           title: "Face Detection AI", 
           link: "https://github.com/ShikharUikey/CODSOFT-05.git",
+          linkedinUrl: "https://www.linkedin.com/posts/shikharuikey_codsoft-artificialintelligence-python-ugcPost-7475924185928740864-oFHk/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGjy4ikBwIREJ3SanHnUVY_osXwf58RGoh0",
           description: "Real-time human face detection application using OpenCV Haar Cascade Classifiers for live webcam feeds.",
           tech: ["Python", "OpenCV", "Haar Cascades", "Computer Vision"]
         }
