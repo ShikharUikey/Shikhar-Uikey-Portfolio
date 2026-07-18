@@ -2,13 +2,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #354024;
-  --color-bg-secondary: #4C3D19;
-  --color-text-primary: #E5D7C4;
-  --color-text-secondary: #CFBB99;
-  --color-accent-warm: #CFBB99;
-  --color-accent-matcha: #889063;
-  --color-border: rgba(207, 187, 153, 0.2);
+  --color-bg-primary: #050505;
+  --color-bg-secondary: #111111;
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A1A1AA;
+  --color-accent-warm: #FF3366;
+  --color-accent-matcha: #00E676;
+  --color-border: #222222;
   
   --font-sans: var(--font-inter);
   --font-cursive: 'Caveat', cursive;
@@ -16,8 +16,8 @@
 }
 
 :root {
-  --background: #354024;
-  --foreground: #E5D7C4;
+  --background: #050505;
+  --foreground: #FAFAFA;
 }
 
 body {
@@ -37,11 +37,11 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #CFBB99;
+  background: #D3CDC4;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #889063;
+  background: #AFA89D;
 }
 
 /* Base Utility Classes for Narrative Flow */
