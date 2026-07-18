@@ -42,21 +42,23 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => {
 
         {/* Content Column */}
         <div className="col-span-3 pb-12">
-          <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
-            {item.role}
-          </h3>
-          <h4 className={`text-lg font-medium mb-4 ${item.isEducation ? 'text-[var(--color-accent-warm)]' : 'text-[var(--color-accent-matcha)]'}`}>
-            {item.url ? (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4 decoration-2 transition-all">
-                {item.company}
-              </a>
-            ) : (
-              item.company
-            )}
-          </h4>
-          <p className="text-[var(--color-text-secondary)] leading-relaxed font-light">
-            {item.description}
-          </p>
+          <div className="inline-block p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+            <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
+              {item.role}
+            </h3>
+            <h4 className={`text-lg font-medium mb-4 ${item.isEducation ? 'text-[var(--color-accent-warm)]' : 'text-[var(--color-accent-matcha)]'}`}>
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4 decoration-2 transition-all">
+                  {item.company}
+                </a>
+              ) : (
+                item.company
+              )}
+            </h4>
+            <p className="text-[var(--color-text-secondary)] leading-relaxed font-light">
+              {item.description}
+            </p>
+          </div>
         </div>
       </div>
     </motion.div>

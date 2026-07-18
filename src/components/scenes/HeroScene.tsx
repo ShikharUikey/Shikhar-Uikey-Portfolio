@@ -38,9 +38,11 @@ export const HeroScene = () => {
         <h1 className="italic font-black text-4xl sm:text-6xl md:text-[10rem] leading-[0.9] tracking-tighter mb-6 md:mb-8 text-white drop-shadow-lg">
           {heroContent.headline}
         </h1>
-        <p className="text-lg md:text-xl font-light text-gray-300 max-w-2xl">
-          {heroContent.description}
-        </p>
+        <div className="inline-block p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+          <p className="text-lg md:text-xl font-light text-gray-300 max-w-2xl">
+            {heroContent.description}
+          </p>
+        </div>
       </motion.div>
       
       {/* Ikigai Quote (Bottom Left) */}
@@ -50,16 +52,18 @@ export const HeroScene = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 1.5 }}
       >
-        <div className="flex flex-col gap-1 border-l-4 border-[var(--color-accent-warm)] pl-4">
-          <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-400">
-            Philosophy
-          </span>
-          <span className="text-2xl md:text-4xl font-black mt-2 text-white">
-            {heroContent.backgroundQuote}
-          </span>
-          <span className="text-sm italic text-gray-400 mt-1">
-            "{heroContent.quoteTranslation}"
-          </span>
+        <div className="inline-block p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+          <div className="flex flex-col gap-1 border-l-4 border-[var(--color-accent-warm)] pl-4">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-400">
+              Philosophy
+            </span>
+            <span className="text-2xl md:text-4xl font-black mt-2 text-white">
+              {heroContent.backgroundQuote}
+            </span>
+            <span className="text-sm italic text-gray-400 mt-1">
+              "{heroContent.quoteTranslation}"
+            </span>
+          </div>
         </div>
       </motion.div>
 
