@@ -13,10 +13,12 @@ export const ContactScene = () => {
       className="relative bg-[var(--color-bg-secondary)] border-t border-[var(--color-border)] flex flex-col items-center text-center pt-20 md:pt-32 px-4"
     >
       <div className="max-w-2xl relative z-10 flex flex-col items-center justify-center min-h-[60vh]">
-        <h2 className="cursive-accent text-3xl sm:text-5xl md:text-7xl mb-6 md:mb-8">Let's Build Together</h2>
-        <p className="text-base sm:text-xl text-[var(--color-text-secondary)] mb-8 md:mb-12 font-light px-2">
-          I am always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
-        </p>
+        <div className="inline-block p-8 md:p-12 rounded-[2rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-8 md:mb-12 text-center">
+          <h2 className="cursive-accent text-3xl sm:text-5xl md:text-7xl mb-4">Let's Build Together</h2>
+          <p className="text-base sm:text-xl text-[var(--color-text-secondary)] font-light px-2 max-w-2xl mx-auto">
+            I am always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+          </p>
+        </div>
         <button className="px-8 py-4 md:px-10 md:py-5 rounded-full bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-[var(--color-accent-warm)] hover:text-white transition-colors duration-300">
           Start a Conversation
         </button>

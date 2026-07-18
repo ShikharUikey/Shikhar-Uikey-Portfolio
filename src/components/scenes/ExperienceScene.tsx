@@ -69,12 +69,14 @@ export const ExperienceScene = () => {
       <div className="max-w-5xl mx-auto w-full relative z-10 px-6">
         
         <div className="mb-20 text-center md:text-left">
-          <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-warm)]">
-            {experienceContent.sectionLabel}
-          </span>
-          <h2 className="text-4xl md:text-6xl font-black mt-2 text-[var(--color-text-primary)]">
-            {experienceContent.sectionTitle}
-          </h2>
+          <div className="inline-block p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+            <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-warm)] block mb-2">
+              {experienceContent.sectionLabel}
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]">
+              {experienceContent.sectionTitle}
+            </h2>
+          </div>
         </div>
 
         <div className="relative">

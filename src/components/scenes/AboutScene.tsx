@@ -63,12 +63,14 @@ export const AboutScene = () => {
 
         {/* Text Content with Scroll Parallax */}
         <div className="w-full md:w-1/2">
-          <motion.h3 
+          <motion.div 
             style={{ y: yText, opacity: opacityText }}
-            className="italic font-black text-3xl md:text-6xl mb-6 md:mb-10 text-left text-[var(--color-text-primary)] tracking-tight"
+            className="inline-block p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-6 md:mb-10"
           >
-            {aboutContent.sectionTitle}
-          </motion.h3>
+            <h3 className="italic font-black text-3xl md:text-6xl text-left text-[var(--color-text-primary)] tracking-tight">
+              {aboutContent.sectionTitle}
+            </h3>
+          </motion.div>
           
           <div className="space-y-6 text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed font-light">
             {aboutContent.paragraphs.map((paragraph, index) => {

@@ -140,12 +140,14 @@ export const ProjectScene = () => {
     >
       <div className="max-w-6xl mx-auto w-full relative z-10">
         <div className="mb-16 text-center md:text-left">
-          <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-matcha)]">
-            {projectsContent.sectionLabel}
-          </span>
-          <h2 className="text-4xl md:text-6xl font-black mt-2 text-[var(--color-text-primary)]">
-            {projectsContent.sectionTitle}
-          </h2>
+          <div className="inline-block p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+            <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-matcha)] block mb-2">
+              {projectsContent.sectionLabel}
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]">
+              {projectsContent.sectionTitle}
+            </h2>
+          </div>
         </div>
         
         {/* Signature Element: Camera Focus Effect */}
