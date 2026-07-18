@@ -126,12 +126,12 @@ export default function GalleryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-12 cursor-pointer"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-bg-primary)]/95 backdrop-blur-xl p-4 md:p-12 cursor-pointer"
             onClick={() => setSelectedItem(null)}
           >
             {/* Close Button */}
             <button 
-              className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-white transition-colors z-[60]"
+              className="absolute top-6 right-6 md:top-10 md:right-10 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors z-[60]"
               onClick={() => setSelectedItem(null)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 md:w-10 md:h-10">

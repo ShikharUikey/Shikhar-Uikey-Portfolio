@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} font-sans antialiased selection:bg-[#E87A5D] selection:text-white cursor-none`}
+        className={`${inter.variable} font-sans antialiased selection:bg-[var(--color-accent-matcha)] selection:text-[var(--color-bg-primary)] cursor-none`}
       >
         <Preloader />
         <CustomCursor />
