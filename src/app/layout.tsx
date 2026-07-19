@@ -25,6 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased selection:bg-[#E87A5D] selection:text-white cursor-none`}
       >
+        <div className="film-grain" />
         <Preloader />
         <CustomCursor />
         <Navbar />
