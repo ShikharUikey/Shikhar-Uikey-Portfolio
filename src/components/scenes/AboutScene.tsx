@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { aboutContent } from "@/content";
 import { CinematicTitle } from "@/components/ui/CinematicTitle";
+import { CinematicRevealText } from "@/components/ui/CinematicRevealText";
 
 export const AboutScene = () => {
   const containerRef = useRef(null);
@@ -76,24 +77,26 @@ export const AboutScene = () => {
             />
           </motion.div>
           
-          <div className="space-y-6 text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed font-light">
-            {aboutContent.paragraphs.map((paragraph, index) => {
-              // Creating a staggered parallax effect for each paragraph
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const pY = useTransform(scrollYProgress, [0, 0.8 + (index * 0.1)], [100 + (index * 20), 0]);
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const pOp = useTransform(scrollYProgress, [0, 0.7 + (index * 0.1)], [0, 1]);
-              
-              return (
-                <motion.p 
-                  key={index} 
-                  style={{ y: pY, opacity: pOp }}
-                >
-                  {paragraph}
-                </motion.p>
-              )
-            })}
-          </div>
+          <CinematicRevealText>
+            <div className="space-y-6 text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed font-light">
+              {aboutContent.paragraphs.map((paragraph, index) => {
+                // Creating a staggered parallax effect for each paragraph
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                const pY = useTransform(scrollYProgress, [0, 0.8 + (index * 0.1)], [100 + (index * 20), 0]);
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                const pOp = useTransform(scrollYProgress, [0, 0.7 + (index * 0.1)], [0, 1]);
+                
+                return (
+                  <motion.p 
+                    key={index} 
+                    style={{ y: pY, opacity: pOp }}
+                  >
+                    {paragraph}
+                  </motion.p>
+                )
+              })}
+            </div>
+          </CinematicRevealText>
         </div>
       </div>
     </section>
