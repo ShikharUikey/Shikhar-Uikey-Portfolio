@@ -32,7 +32,7 @@ export const CinematicTitle = ({ text, className = "" }: CinematicTitleProps) =>
       filter: "blur(0px)",
       transition: { 
         duration: 1.2, 
-        ease: [0.16, 1, 0.3, 1], // cinematic smooth ease-out
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number], // cinematic smooth ease-out
       },
     },
   };
