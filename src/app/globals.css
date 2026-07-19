@@ -90,23 +90,9 @@ body {
   transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-.camera-focus-container:hover .focus-item:not(:hover) {
-  filter: blur(4px) grayscale(50%);
-  opacity: 0.6;
-  transform: scale(0.98);
-}
-
+/* Subtle Camera Focus Transition properties */
 .focus-item {
   transition: filter 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
-}
-
-/* Disable blur/focus effect on touch devices */
-@media (hover: none) {
-  .camera-focus-container:hover .focus-item:not(:hover) {
-    filter: none;
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* Mobile ikigai quote adjustments */

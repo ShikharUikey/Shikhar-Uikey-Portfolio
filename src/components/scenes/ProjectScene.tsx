@@ -75,7 +75,7 @@ const CardFace = ({
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden"
       }}
-      className={`focus-item group absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl ${
+      className={`absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl ${
         project.link ? 'cursor-pointer' : 'cursor-default'
       } ${isFaceActive ? "pointer-events-auto" : "pointer-events-none"}`}
     >
@@ -84,9 +84,9 @@ const CardFace = ({
       {/* Dynamic Image Placeholder based on content using optimized next/image */}
       <motion.div 
         style={{ translateZ: -50 }}
-        className={`absolute inset-0 ${project.imagePlaceholder} z-0 transition-transform duration-700 group-hover:scale-105`}
+        className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105"
       >
-        {project.image && (
+        {project.image ? (
           <Image 
             src={project.image} 
             alt={project.title}
@@ -95,6 +95,8 @@ const CardFace = ({
             className="w-full h-full object-cover opacity-60"
             loading="lazy"
           />
+        ) : (
+          <div className={`w-full h-full ${project.imagePlaceholder}`} />
         )}
       </motion.div>
       
@@ -168,17 +170,35 @@ const ProjectCard = ({
   createdProject, 
   featuredProject, 
   activeTab, 
-  index 
+  index,
+  isFocused,
+  isAnyHovered
 }: { 
   createdProject: any; 
   featuredProject: any; 
   activeTab: "created" | "featured"; 
   index: number;
+  isFocused: boolean;
+  isAnyHovered: boolean;
 }) => {
   const isFlipped = activeTab === "featured";
 
+  // React-driven camera-focus optimization: applying scale, opacity, blur on parent wrapper
+  const scale = isAnyHovered ? (isFocused ? 1.02 : 0.96) : 1;
+  const opacity = isAnyHovered ? (isFocused ? 1 : 0.4) : 1;
+  const blurVal = isAnyHovered ? (isFocused ? 0 : 5) : 0;
+
   return (
-    <div className="relative h-[400px] sm:h-[450px] md:h-[500px] w-full" style={{ perspective: "1500px" }}>
+    <motion.div 
+      animate={{ 
+        scale,
+        opacity,
+        filter: `blur(${blurVal}px)`
+      }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="relative h-[400px] sm:h-[450px] md:h-[500px] w-full" 
+      style={{ perspective: "1500px" }}
+    >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ 
@@ -196,12 +216,14 @@ const ProjectCard = ({
         {/* Back Card Face (Featured) */}
         <CardFace project={featuredProject} isBack={true} activeTab={activeTab} />
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
 export const ProjectScene = () => {
   const [activeTab, setActiveTab] = useState<"created" | "featured">("created");
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  
   const createdProjects = projectsContent.projects;
   const featuredProjects = projectsContent.featuredProjects || [];
 
@@ -254,16 +276,24 @@ export const ProjectScene = () => {
           </div>
         </div>
         
-        {/* Signature Element: Camera Focus Effect */}
-        <div className="camera-focus-container grid grid-cols-1 md:grid-cols-2 gap-12" style={{ perspective: "1500px" }}>
+        {/* Camera Focus Effect grid layout with React-driven triggers */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12" style={{ perspective: "1500px" }}>
           {createdProjects.map((project, idx) => (
-            <ProjectCard 
-              key={project.id} 
-              createdProject={project} 
-              featuredProject={featuredProjects[idx] || project}
-              activeTab={activeTab}
-              index={idx}
-            />
+            <div
+              key={project.id}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              className="w-full h-full"
+            >
+              <ProjectCard 
+                createdProject={project} 
+                featuredProject={featuredProjects[idx] || project}
+                activeTab={activeTab}
+                index={idx}
+                isFocused={hoveredIdx === idx}
+                isAnyHovered={hoveredIdx !== null}
+              />
+            </div>
           ))}
         </div>
       </div>
