@@ -4,11 +4,20 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { animateSectionFadeUp } from "@/animations/engine";
 import { projectsContent } from "@/content";
 import { CinematicTitle } from "@/components/ui/CinematicTitle";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // Sub-component for Advanced Parallax Card face
-const CardFace = ({ project, isBack = false }: { project: any; isBack?: boolean }) => {
+const CardFace = ({ 
+  project, 
+  isBack = false,
+  activeTab
+}: { 
+  project: any; 
+  isBack?: boolean; 
+  activeTab: "created" | "featured";
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -23,6 +32,12 @@ const CardFace = ({ project, isBack = false }: { project: any; isBack?: boolean 
     [-0.5, 0.5], 
     isBack ? ["170deg", "190deg"] : ["-10deg", "10deg"]
   );
+
+  // Reset tilt coordinates when tabs toggle to ensure cards flip in a flat, clean alignment
+  useEffect(() => {
+    x.set(0);
+    y.set(0);
+  }, [activeTab]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -44,6 +59,7 @@ const CardFace = ({ project, isBack = false }: { project: any; isBack?: boolean 
   };
 
   const Component: any = project.link ? motion.a : motion.div;
+  const isFaceActive = isBack ? activeTab === "featured" : activeTab === "created";
 
   return (
     <Component 
@@ -60,21 +76,24 @@ const CardFace = ({ project, isBack = false }: { project: any; isBack?: boolean 
         WebkitBackfaceVisibility: "hidden"
       }}
       className={`focus-item group absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl ${
-        project.link ? 'cursor-pointer pointer-events-auto' : 'cursor-default pointer-events-auto'
-      }`}
+        project.link ? 'cursor-pointer' : 'cursor-default'
+      } ${isFaceActive ? "pointer-events-auto" : "pointer-events-none"}`}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-transparent opacity-90 z-10 transition-opacity duration-500 group-hover:opacity-60"></div>
       
-      {/* Dynamic Image Placeholder based on content */}
+      {/* Dynamic Image Placeholder based on content using optimized next/image */}
       <motion.div 
         style={{ translateZ: -50 }}
-        className={`absolute inset-0 ${project.imagePlaceholder} z-0 transition-transform duration-700 group-hover:scale-110`}
+        className={`absolute inset-0 ${project.imagePlaceholder} z-0 transition-transform duration-700 group-hover:scale-105`}
       >
         {project.image && (
-          <img 
+          <Image 
             src={project.image} 
             alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="w-full h-full object-cover opacity-60"
+            loading="lazy"
           />
         )}
       </motion.div>
@@ -172,10 +191,10 @@ const ProjectCard = ({
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Front Card Face (What I Created) */}
-        <CardFace project={createdProject} isBack={false} />
+        <CardFace project={createdProject} isBack={false} activeTab={activeTab} />
 
         {/* Back Card Face (Featured) */}
-        <CardFace project={featuredProject} isBack={true} />
+        <CardFace project={featuredProject} isBack={true} activeTab={activeTab} />
       </motion.div>
     </div>
   );
@@ -197,7 +216,7 @@ export const ProjectScene = () => {
     >
       <div className="max-w-6xl mx-auto w-full relative z-10">
         
-        {/* Double Tab Header Toggle (replaces What I Create) */}
+        {/* Double Tab Header Toggle */}
         <div className="mb-16 flex justify-center md:justify-start">
           <div className="inline-block p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
             <span className="text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-matcha)] block mb-3 text-center md:text-left select-none">
