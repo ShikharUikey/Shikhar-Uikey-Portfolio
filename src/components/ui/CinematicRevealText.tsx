@@ -2,7 +2,17 @@
 
 import React, { useState, useRef } from "react";
 
-export const CinematicRevealText = ({ children }: { children: React.ReactNode }) => {
+export const CinematicRevealText = ({ 
+  children, 
+  revealText, 
+  textSizeClass = "text-6xl sm:text-7xl md:text-9xl",
+  maskRadius = 120
+}: { 
+  children: React.ReactNode; 
+  revealText: string;
+  textSizeClass?: string;
+  maskRadius?: number;
+}) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,16 +45,16 @@ export const CinematicRevealText = ({ children }: { children: React.ReactNode })
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-20"
       >
         <span 
-          className="text-6xl sm:text-7xl md:text-9xl font-black text-[var(--color-accent-warm)] tracking-widest transition-opacity duration-300 text-center block w-full"
+          className={`${textSizeClass} font-black text-[var(--color-accent-warm)] tracking-widest transition-opacity duration-300 text-center block w-full`}
           style={{
             fontFamily: 'var(--font-japanese)',
             opacity: isHovered ? 0.8 : 0,
-            WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 100%, transparent 100%)`,
-            maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 100%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 100%, transparent 100%)`,
+            maskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 100%, transparent 100%)`,
             mixBlendMode: "screen", // Creates a cool light-projection/cinematic overlay effect
           }}
         >
-          アーティスト
+          {revealText}
         </span>
       </div>
     </div>
