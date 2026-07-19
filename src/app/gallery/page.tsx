@@ -62,15 +62,22 @@ export default function GalleryPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and register escape keypress listener when modal is open
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedItem(null);
+    };
+
     if (selectedItem) {
       document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "unset";
     }
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedItem]);
 

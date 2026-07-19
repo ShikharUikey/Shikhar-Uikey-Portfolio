@@ -12,7 +12,8 @@ const SocialBubble = ({
   isFaceHovered, 
   style,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  ariaLabel
 }: { 
   href: string; 
   icon: "instagram" | "linkedin" | "github"; 
@@ -20,6 +21,7 @@ const SocialBubble = ({
   style?: React.CSSProperties;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  ariaLabel: string;
 }) => {
   return (
     <motion.a
@@ -29,6 +31,8 @@ const SocialBubble = ({
       style={style}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-label={ariaLabel}
+      title={ariaLabel}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
         scale: isFaceHovered ? 1 : 0, 
@@ -38,8 +42,8 @@ const SocialBubble = ({
         scale: { type: "spring", stiffness: 200, damping: 15 },
         opacity: { duration: 0.25 }
       }}
-      className={`absolute z-30 pointer-events-auto p-4 sm:p-5 rounded-full bg-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] text-white hover:text-[var(--color-accent-matcha)] hover:border-[var(--color-accent-matcha)] hover:scale-110 transition-transform duration-300 flex items-center justify-center cursor-pointer ${
-        isFaceHovered ? "animate-float-gentle" : ""
+      className={`absolute z-30 p-4 sm:p-5 rounded-full bg-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] text-white hover:text-[var(--color-accent-matcha)] hover:border-[var(--color-accent-matcha)] hover:scale-110 transition-transform duration-300 flex items-center justify-center cursor-pointer ${
+        isFaceHovered ? "pointer-events-auto animate-float-gentle" : "pointer-events-none"
       }`}
     >
       {icon === "instagram" && (
@@ -68,8 +72,10 @@ export const HeroScene = () => {
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
   const [origin, setOrigin] = useState({ x: 600, y: 350 });
   const [time, setTime] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -245,133 +251,142 @@ export const HeroScene = () => {
       </motion.div>
 
       {/* Glowing Star Arcs & Constellation Connections SVG Overlay */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
-        <defs>
-          <filter id="glow-accent" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+      {isMounted && (
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+          <defs>
+            <filter id="glow-accent" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-        {/* Concentric Inner Arc (Styling Only, positioned behind ear) */}
-        <motion.path 
-          d={pathInner}
-          fill="none"
-          stroke="rgba(0, 230, 118, 0.75)"
-          strokeWidth={1.8}
-          filter="url(#glow-accent)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: isFaceHovered ? 1 : 0,
-            opacity: isFaceHovered ? 1 : 0 
-          }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        />
+          {/* Concentric Inner Arc (Styling Only, positioned behind ear) */}
+          <motion.path 
+            d={pathInner}
+            fill="none"
+            stroke="rgba(0, 230, 118, 0.75)"
+            strokeWidth={1.8}
+            filter="url(#glow-accent)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: isFaceHovered ? 1 : 0,
+              opacity: isFaceHovered ? 1 : 0 
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
 
-        {/* Concentric Outer Arc (Connected to branches) */}
-        <motion.path 
-          d={pathOuter}
-          fill="none"
-          stroke="rgba(0, 230, 118, 0.75)"
-          strokeWidth={1.8}
-          filter="url(#glow-accent)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: isFaceHovered ? 1 : 0,
-            opacity: isFaceHovered ? 1 : 0 
-          }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-        />
+          {/* Concentric Outer Arc (Connected to branches) */}
+          <motion.path 
+            d={pathOuter}
+            fill="none"
+            stroke="rgba(0, 230, 118, 0.75)"
+            strokeWidth={1.8}
+            filter="url(#glow-accent)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: isFaceHovered ? 1 : 0,
+              opacity: isFaceHovered ? 1 : 0 
+            }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          />
 
-        {/* Line 1 (Instagram connection) */}
-        <motion.line 
-          x1={sx1} y1={sy1}
-          x2={ex1} y2={ey1}
-          stroke="rgba(0, 230, 118, 0.65)"
-          strokeWidth={1.4}
-          filter="url(#glow-accent)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: isFaceHovered ? 1 : 0,
-            opacity: isFaceHovered ? 1 : 0 
-          }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
-        />
+          {/* Line 1 (Instagram connection) */}
+          <motion.line 
+            x1={sx1} y1={sy1}
+            x2={ex1} y2={ey1}
+            stroke="rgba(0, 230, 118, 0.65)"
+            strokeWidth={1.4}
+            filter="url(#glow-accent)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: isFaceHovered ? 1 : 0,
+              opacity: isFaceHovered ? 1 : 0 
+            }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+          />
 
-        {/* Line 2 (LinkedIn connection) */}
-        <motion.line 
-          x1={sx2} y1={sy2}
-          x2={ex2} y2={ey2}
-          stroke="rgba(0, 230, 118, 0.65)"
-          strokeWidth={1.4}
-          filter="url(#glow-accent)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: isFaceHovered ? 1 : 0,
-            opacity: isFaceHovered ? 1 : 0 
-          }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
-        />
+          {/* Line 2 (LinkedIn connection) */}
+          <motion.line 
+            x1={sx2} y1={sy2}
+            x2={ex2} y2={ey2}
+            stroke="rgba(0, 230, 118, 0.65)"
+            strokeWidth={1.4}
+            filter="url(#glow-accent)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: isFaceHovered ? 1 : 0,
+              opacity: isFaceHovered ? 1 : 0 
+            }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+          />
 
-        {/* Line 3 (GitHub connection) */}
-        <motion.line 
-          x1={sx3} y1={sy3}
-          x2={ex3} y2={ey3}
-          stroke="rgba(0, 230, 118, 0.65)"
-          strokeWidth={1.4}
-          filter="url(#glow-accent)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: isFaceHovered ? 1 : 0,
-            opacity: isFaceHovered ? 1 : 0 
-          }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
-        />
-      </svg>
+          {/* Line 3 (GitHub connection) */}
+          <motion.line 
+            x1={sx3} y1={sy3}
+            x2={ex3} y2={ey3}
+            stroke="rgba(0, 230, 118, 0.65)"
+            strokeWidth={1.4}
+            filter="url(#glow-accent)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: isFaceHovered ? 1 : 0,
+              opacity: isFaceHovered ? 1 : 0 
+            }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+          />
+        </svg>
+      )}
 
-      {/* Floating Social Handles (placed relative to main viewport to prevent container clipping, keeping mouse listeners active) */}
-      <SocialBubble 
-        href="https://instagram.com/" 
-        icon="instagram" 
-        isFaceHovered={isFaceHovered} 
-        style={{ 
-          left: ex1, 
-          top: ey1, 
-          transform: "translate(-50%, -50%)",
-          animationDelay: "0s" 
-        }}
-        onMouseEnter={() => setIsFaceHovered(true)}
-        onMouseLeave={() => setIsFaceHovered(false)}
-      />
-      <SocialBubble 
-        href="https://www.linkedin.com/in/shikharuikey/" 
-        icon="linkedin" 
-        isFaceHovered={isFaceHovered} 
-        style={{ 
-          left: ex2, 
-          top: ey2, 
-          transform: "translate(-50%, -50%)",
-          animationDelay: "1.3s" 
-        }}
-        onMouseEnter={() => setIsFaceHovered(true)}
-        onMouseLeave={() => setIsFaceHovered(false)}
-      />
-      <SocialBubble 
-        href="https://github.com/ShikharUikey" 
-        icon="github" 
-        isFaceHovered={isFaceHovered} 
-        style={{ 
-          left: ex3, 
-          top: ey3, 
-          transform: "translate(-50%, -50%)",
-          animationDelay: "2.6s" 
-        }}
-        onMouseEnter={() => setIsFaceHovered(true)}
-        onMouseLeave={() => setIsFaceHovered(false)}
-      />
+      {/* Floating Social Handles */}
+      {isMounted && (
+        <>
+          <SocialBubble 
+            href="https://instagram.com/" 
+            icon="instagram" 
+            isFaceHovered={isFaceHovered} 
+            ariaLabel="Instagram"
+            style={{ 
+              left: ex1, 
+              top: ey1, 
+              transform: "translate(-50%, -50%)",
+              animationDelay: "0s" 
+            }}
+            onMouseEnter={() => setIsFaceHovered(true)}
+            onMouseLeave={() => setIsFaceHovered(false)}
+          />
+          <SocialBubble 
+            href="https://www.linkedin.com/in/shikharuikey/" 
+            icon="linkedin" 
+            isFaceHovered={isFaceHovered} 
+            ariaLabel="LinkedIn"
+            style={{ 
+              left: ex2, 
+              top: ey2, 
+              transform: "translate(-50%, -50%)",
+              animationDelay: "1.3s" 
+            }}
+            onMouseEnter={() => setIsFaceHovered(true)}
+            onMouseLeave={() => setIsFaceHovered(false)}
+          />
+          <SocialBubble 
+            href="https://github.com/ShikharUikey" 
+            icon="github" 
+            isFaceHovered={isFaceHovered} 
+            ariaLabel="GitHub"
+            style={{ 
+              left: ex3, 
+              top: ey3, 
+              transform: "translate(-50%, -50%)",
+              animationDelay: "2.6s" 
+            }}
+            onMouseEnter={() => setIsFaceHovered(true)}
+            onMouseLeave={() => setIsFaceHovered(false)}
+          />
+        </>
+      )}
 
       {/* Face Interactive Hover Trigger Zone */}
       <div 

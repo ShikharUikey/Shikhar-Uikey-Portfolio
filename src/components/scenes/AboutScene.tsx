@@ -24,15 +24,22 @@ export const AboutScene = () => {
   const yImage = useTransform(scrollYProgress, [0, 1], [50, 0]);
   const opacityImage = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
 
-  // Lock body scroll when preview is open
+  // Lock body scroll and register escape keypress listener when preview is open
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowPreview(false);
+    };
+
     if (showPreview) {
       document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "unset";
     }
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [showPreview]);
 
