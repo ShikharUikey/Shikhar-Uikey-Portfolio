@@ -39,10 +39,10 @@ export const CinematicRevealText = ({
         className="relative z-10 transition-all duration-300"
         style={{
           WebkitMaskImage: isHovered 
-            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 95%, black 100%)` 
+            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 50%, black 100%)` 
             : "none",
           maskImage: isHovered 
-            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 95%, black 100%)` 
+            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 50%, black 100%)` 
             : "none",
         }}
       >
@@ -59,8 +59,8 @@ export const CinematicRevealText = ({
           style={{
             fontFamily: 'var(--font-japanese)',
             opacity: isHovered ? 1.0 : 0,
-            WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 95%, transparent 100%)`,
-            maskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 95%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,
+            maskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,
           }}
         >
           {revealText}

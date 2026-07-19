@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { animateSectionFadeUp } from "@/animations/engine";
+import { FlippingTitle } from "@/components/ui/FlippingTitle";
 
 export const ContactScene = () => {
   return (
@@ -14,7 +15,7 @@ export const ContactScene = () => {
     >
       <div className="max-w-2xl relative z-10 flex flex-col items-center justify-center min-h-[60vh]">
         <div className="inline-block p-8 md:p-12 rounded-[2rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-8 md:mb-12 text-center">
-          <h2 className="cursive-accent text-3xl sm:text-5xl md:text-7xl mb-4">Let's Build Together</h2>
+          <FlippingTitle />
           <p className="text-base sm:text-xl text-[var(--color-text-secondary)] font-light px-2 max-w-2xl mx-auto">
             I am always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
           </p>
