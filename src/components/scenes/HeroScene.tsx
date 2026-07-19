@@ -164,19 +164,19 @@ export const HeroScene = () => {
           href="https://instagram.com/" 
           icon="instagram" 
           isFaceHovered={isFaceHovered} 
-          className="top-[25%] right-[10%] md:right-[20%]"
+          className="top-[24%] right-[20%] md:right-[34%]"
         />
         <SocialBubble 
           href="https://www.linkedin.com/in/shikharuikey/" 
           icon="linkedin" 
           isFaceHovered={isFaceHovered} 
-          className="top-[48%] right-[5%] md:right-[14%]"
+          className="top-[48%] right-[14%] md:right-[28%]"
         />
         <SocialBubble 
           href="https://github.com/ShikharUikey" 
           icon="github" 
           isFaceHovered={isFaceHovered} 
-          className="bottom-[25%] right-[10%] md:right-[18%]"
+          className="bottom-[24%] right-[18%] md:right-[32%]"
         />
       </div>
     </section>
