@@ -17,9 +17,9 @@ export default function Home() {
       
       <AboutScene />
       
-      <ExperienceScene />
-      
       <ProjectScene />
+      
+      <ExperienceScene />
       
       <ContactScene />
 

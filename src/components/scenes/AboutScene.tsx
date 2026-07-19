@@ -25,6 +25,7 @@ export const AboutScene = () => {
 
   return (
     <section 
+      id="about"
       ref={containerRef}
       className="cinematic-section bg-[var(--color-bg-primary)] border-y border-[var(--color-border)] min-h-screen md:min-h-[120vh] flex items-center relative snap-start"
     >

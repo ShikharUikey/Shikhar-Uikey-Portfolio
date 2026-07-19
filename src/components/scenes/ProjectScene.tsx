@@ -134,11 +134,12 @@ const ProjectCard = ({ project }: { project: any }) => {
 export const ProjectScene = () => {
   return (
     <motion.section 
+      id="work"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-20%" }}
       variants={animateSectionFadeUp}
-      className="cinematic-section bg-[var(--color-bg-primary)]"
+      className="cinematic-section bg-[var(--color-bg-primary)] snap-start"
     >
       <div className="max-w-6xl mx-auto w-full relative z-10">
         <div className="mb-16 text-center md:text-left">

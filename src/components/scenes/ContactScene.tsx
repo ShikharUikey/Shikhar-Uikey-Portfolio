@@ -7,6 +7,7 @@ import { FlippingTitle } from "@/components/ui/FlippingTitle";
 export const ContactScene = () => {
   return (
     <motion.section 
+      id="contact"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-20%" }}
