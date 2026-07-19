@@ -66,7 +66,7 @@ const SocialBubble = ({
 export const HeroScene = () => {
   const [isFaceHovered, setIsFaceHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
-  const [origin, setOrigin] = useState({ x: 580, y: 400 });
+  const [origin, setOrigin] = useState({ x: 600, y: 350 });
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -76,10 +76,10 @@ export const HeroScene = () => {
       setDimensions({ w, h });
       if (w < 768) {
         // Mobile coordinates next to ear profile
-        setOrigin({ x: w * 0.54, y: h * 0.44 });
+        setOrigin({ x: w * 0.58, y: h * 0.40 });
       } else {
         // Desktop coordinates positioned to place curves immediately behind/after the visible ear
-        setOrigin({ x: w * 0.57, y: h * 0.48 });
+        setOrigin({ x: w * 0.61, y: h * 0.43 });
       }
     };
     handleResize();
