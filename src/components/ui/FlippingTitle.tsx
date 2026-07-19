@@ -7,14 +7,20 @@ const FlippingWord = ({ eng, jap, delay }: { eng: string; jap: string; delay: nu
   const [showJap, setShowJap] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    let intervalId: NodeJS.Timeout;
+    const timeoutId = setTimeout(() => {
       setShowJap(true);
-      const interval = setInterval(() => {
+      intervalId = setInterval(() => {
         setShowJap(prev => !prev);
       }, 3500);
-      return () => clearInterval(interval);
     }, delay);
-    return () => clearTimeout(timeout);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [delay]);
 
   return (
