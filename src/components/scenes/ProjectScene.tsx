@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { animateSectionFadeUp } from "@/animations/engine";
 import { projectsContent } from "@/content";
+import { CinematicTitle } from "@/components/ui/CinematicTitle";
 import React from "react";
 import Link from "next/link";
 
@@ -144,9 +145,10 @@ export const ProjectScene = () => {
             <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-matcha)] block mb-2">
               {projectsContent.sectionLabel}
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]">
-              {projectsContent.sectionTitle}
-            </h2>
+            <CinematicTitle
+              text={projectsContent.sectionTitle}
+              className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]"
+            />
           </div>
         </div>
         

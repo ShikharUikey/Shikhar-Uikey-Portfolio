@@ -7,7 +7,7 @@ import { heroContent } from "@/content";
 
 export const HeroScene = () => {
   return (
-    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black">
+    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black snap-start">
       {/* Background Image Setup */}
       <div className="absolute inset-0 z-0">
         <Image 

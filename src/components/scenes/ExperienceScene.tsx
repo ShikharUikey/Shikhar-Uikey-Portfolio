@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { experienceContent } from "@/content";
+import { CinematicTitle } from "@/components/ui/CinematicTitle";
 
 const TimelineItem = ({ item, index }: { item: any; index: number }) => {
   const itemRef = useRef(null);
@@ -75,9 +76,10 @@ export const ExperienceScene = () => {
             <span className="text-sm tracking-[0.2em] uppercase font-bold text-[var(--color-accent-warm)] block mb-2">
               {experienceContent.sectionLabel}
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]">
-              {experienceContent.sectionTitle}
-            </h2>
+            <CinematicTitle
+              text={experienceContent.sectionTitle}
+              className="text-4xl md:text-6xl font-black text-[var(--color-text-primary)]"
+            />
           </div>
         </div>
 

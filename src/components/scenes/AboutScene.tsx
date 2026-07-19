@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { aboutContent } from "@/content";
+import { CinematicTitle } from "@/components/ui/CinematicTitle";
 
 export const AboutScene = () => {
   const containerRef = useRef(null);
@@ -24,7 +25,7 @@ export const AboutScene = () => {
   return (
     <section 
       ref={containerRef}
-      className="cinematic-section bg-[var(--color-bg-primary)] border-y border-[var(--color-border)] min-h-screen md:min-h-[120vh] flex items-center relative"
+      className="cinematic-section bg-[var(--color-bg-primary)] border-y border-[var(--color-border)] min-h-screen md:min-h-[120vh] flex items-center relative snap-start"
     >
       <div className="max-w-6xl mx-auto w-full p-4 md:p-16 relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-16">
         
@@ -69,9 +70,10 @@ export const AboutScene = () => {
             style={{ y: yText, opacity: opacityText }}
             className="inline-block p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] mb-6 md:mb-10"
           >
-            <h3 className="italic font-black text-3xl md:text-6xl text-left text-[var(--color-text-primary)] tracking-tight">
-              {aboutContent.sectionTitle}
-            </h3>
+            <CinematicTitle
+              text={aboutContent.sectionTitle}
+              className="italic font-black text-3xl md:text-6xl text-left text-[var(--color-text-primary)] tracking-tight"
+            />
           </motion.div>
           
           <div className="space-y-6 text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed font-light">

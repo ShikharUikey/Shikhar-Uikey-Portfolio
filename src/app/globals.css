@@ -20,6 +20,11 @@
   --foreground: #FAFAFA;
 }
 
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -52,6 +57,7 @@ body {
   justify-content: center;
   position: relative;
   padding: 2rem 1rem;
+  scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
