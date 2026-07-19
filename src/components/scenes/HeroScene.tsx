@@ -60,7 +60,8 @@ const SocialBubble = ({
 export const HeroScene = () => {
   const [isFaceHovered, setIsFaceHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
-  const [origin, setOrigin] = useState({ x: 540, y: 400 });
+  const [origin, setOrigin] = useState({ x: 400, y: 400 });
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -68,9 +69,11 @@ export const HeroScene = () => {
       const h = window.innerHeight;
       setDimensions({ w, h });
       if (w < 768) {
-        setOrigin({ x: w * 0.50, y: h * 0.42 });
+        // Mobile coordinates centered relative to back of head/ear
+        setOrigin({ x: w * 0.42, y: h * 0.44 });
       } else {
-        setOrigin({ x: w * 0.54, y: h * 0.50 });
+        // Desktop coordinates next to the visible ear
+        setOrigin({ x: w * 0.40, y: h * 0.49 });
       }
     };
     handleResize();
@@ -78,20 +81,45 @@ export const HeroScene = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Helper offsets for responsive circular constellation elements
+  // Frame tick timer loop for the breathing constellation lines
+  useEffect(() => {
+    if (!isFaceHovered) return;
+    let animationFrameId: number;
+    const tick = () => {
+      setTime(prev => prev + 0.035);
+      animationFrameId = requestAnimationFrame(tick);
+    };
+    animationFrameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isFaceHovered]);
+
+  // Helper offsets for responsive circular constellation elements (including live breathing offsets)
   const getOffsets = () => {
     const isMobile = dimensions.w < 768;
+    
+    // Subtle sinusoidal floating values
+    const floatAmp = isMobile ? 3 : 8;
+    const float1 = isFaceHovered ? Math.sin(time) * floatAmp : 0;
+    const float2 = isFaceHovered ? Math.sin(time + 2.0) * floatAmp : 0;
+    const float3 = isFaceHovered ? Math.sin(time + 4.0) * floatAmp : 0;
+
     return {
-      r1: isMobile ? 50 : 70,
-      r2: isMobile ? 75 : 105,
-      insta: isMobile ? { dx: 120, dy: -80 } : { dx: 220, dy: -140 },
-      linkedin: isMobile ? { dx: 145, dy: 0 } : { dx: 260, dy: 0 },
-      github: isMobile ? { dx: 120, dy: 80 } : { dx: 220, dy: 140 }
+      r1: isMobile ? 35 : 55,
+      r2: isMobile ? 55 : 85,
+      insta: isMobile 
+        ? { dx: 110, dy: -70 + float1 } 
+        : { dx: 310, dy: -130 + float1 },
+      linkedin: isMobile 
+        ? { dx: 135, dy: 0 + float2 } 
+        : { dx: 370, dy: 0 + float2 },
+      github: isMobile 
+        ? { dx: 110, dy: 70 + float3 } 
+        : { dx: 310, dy: 130 + float3 }
     };
   };
 
   const offsets = getOffsets();
-  const rad = Math.PI / 4; // 45 degrees arc bounds
+  const rad = Math.PI / 4.2; // ~42 degrees arc bounds
 
   // Inner arc coords
   const ix1 = origin.x + offsets.r1 * Math.cos(-rad);
@@ -108,7 +136,7 @@ export const HeroScene = () => {
   const pathOuter = `M ${ox1} ${oy1} A ${offsets.r2} ${offsets.r2} 0 0 1 ${ox2} ${oy2}`;
 
   // Connecting lines start coords on outer arc
-  const l_rad = Math.PI / 6; // 30 degrees spread
+  const l_rad = Math.PI / 6.2; // Spreading angle
   const sx1 = origin.x + offsets.r2 * Math.cos(-l_rad);
   const sy1 = origin.y + offsets.r2 * Math.sin(-l_rad);
   const sx2 = origin.x + offsets.r2;
@@ -116,7 +144,7 @@ export const HeroScene = () => {
   const sx3 = origin.x + offsets.r2 * Math.cos(l_rad);
   const sy3 = origin.y + offsets.r2 * Math.sin(l_rad);
 
-  // Bubble center coordinates
+  // Bubble center coordinates (real-time updating with float)
   const ex1 = origin.x + offsets.insta.dx;
   const ey1 = origin.y + offsets.insta.dy;
   const ex2 = origin.x + offsets.linkedin.dx;
@@ -222,12 +250,12 @@ export const HeroScene = () => {
           </filter>
         </defs>
 
-        {/* Concentric Inner Arc (Styling Only) */}
+        {/* Concentric Inner Arc (Styling Only, next to Ear) */}
         <motion.path 
           d={pathInner}
           fill="none"
-          stroke="rgba(0, 230, 118, 0.7)"
-          strokeWidth={1.5}
+          stroke="rgba(0, 230, 118, 0.75)"
+          strokeWidth={1.8}
           filter="url(#glow-accent)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
@@ -241,8 +269,8 @@ export const HeroScene = () => {
         <motion.path 
           d={pathOuter}
           fill="none"
-          stroke="rgba(0, 230, 118, 0.7)"
-          strokeWidth={1.5}
+          stroke="rgba(0, 230, 118, 0.75)"
+          strokeWidth={1.8}
           filter="url(#glow-accent)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
@@ -256,8 +284,8 @@ export const HeroScene = () => {
         <motion.line 
           x1={sx1} y1={sy1}
           x2={ex1} y2={ey1}
-          stroke="rgba(0, 230, 118, 0.6)"
-          strokeWidth={1.2}
+          stroke="rgba(0, 230, 118, 0.65)"
+          strokeWidth={1.4}
           filter="url(#glow-accent)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
@@ -271,8 +299,8 @@ export const HeroScene = () => {
         <motion.line 
           x1={sx2} y1={sy2}
           x2={ex2} y2={ey2}
-          stroke="rgba(0, 230, 118, 0.6)"
-          strokeWidth={1.2}
+          stroke="rgba(0, 230, 118, 0.65)"
+          strokeWidth={1.4}
           filter="url(#glow-accent)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
@@ -286,8 +314,8 @@ export const HeroScene = () => {
         <motion.line 
           x1={sx3} y1={sy3}
           x2={ex3} y2={ey3}
-          stroke="rgba(0, 230, 118, 0.6)"
-          strokeWidth={1.2}
+          stroke="rgba(0, 230, 118, 0.65)"
+          strokeWidth={1.4}
           filter="url(#glow-accent)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
@@ -307,7 +335,7 @@ export const HeroScene = () => {
         {/* Invisible Clickable Trigger */}
         <div className="absolute inset-0 cursor-pointer" />
 
-        {/* Floating Social Handles (appear on face hover, centered math positions) */}
+        {/* Floating Social Handles (appear on face hover, centered math positions with live float) */}
         <SocialBubble 
           href="https://instagram.com/" 
           icon="instagram" 
@@ -315,7 +343,7 @@ export const HeroScene = () => {
           style={{ 
             left: ex1, 
             top: ey1, 
-            animationDelay: "0.2s" 
+            animationDelay: "0s" 
           }}
         />
         <SocialBubble 
@@ -325,7 +353,7 @@ export const HeroScene = () => {
           style={{ 
             left: ex2, 
             top: ey2, 
-            animationDelay: "0.6s" 
+            animationDelay: "1.3s" 
           }}
         />
         <SocialBubble 
@@ -335,7 +363,7 @@ export const HeroScene = () => {
           style={{ 
             left: ex3, 
             top: ey3, 
-            animationDelay: "1s" 
+            animationDelay: "2.6s" 
           }}
         />
       </div>
