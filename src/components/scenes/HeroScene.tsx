@@ -10,12 +10,16 @@ const SocialBubble = ({
   href, 
   icon, 
   isFaceHovered, 
-  style
+  style,
+  onMouseEnter,
+  onMouseLeave
 }: { 
   href: string; 
   icon: "instagram" | "linkedin" | "github"; 
   isFaceHovered: boolean; 
   style?: React.CSSProperties;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) => {
   return (
     <motion.a
@@ -23,6 +27,8 @@ const SocialBubble = ({
       target="_blank"
       rel="noopener noreferrer"
       style={style}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
         scale: isFaceHovered ? 1 : 0, 
@@ -60,7 +66,7 @@ const SocialBubble = ({
 export const HeroScene = () => {
   const [isFaceHovered, setIsFaceHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
-  const [origin, setOrigin] = useState({ x: 400, y: 400 });
+  const [origin, setOrigin] = useState({ x: 500, y: 400 });
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -69,11 +75,11 @@ export const HeroScene = () => {
       const h = window.innerHeight;
       setDimensions({ w, h });
       if (w < 768) {
-        // Mobile coordinates centered relative to back of head/ear
-        setOrigin({ x: w * 0.42, y: h * 0.44 });
+        // Mobile coordinates next to ear
+        setOrigin({ x: w * 0.50, y: h * 0.44 });
       } else {
         // Desktop coordinates next to the visible ear
-        setOrigin({ x: w * 0.40, y: h * 0.49 });
+        setOrigin({ x: w * 0.52, y: h * 0.47 });
       }
     };
     handleResize();
@@ -108,7 +114,7 @@ export const HeroScene = () => {
       r2: isMobile ? 55 : 85,
       insta: isMobile 
         ? { dx: 110, dy: -70 + float1 } 
-        : { dx: 310, dy: -130 + float1 },
+        : { dx: 310, dy: -140 + float1 },
       linkedin: isMobile 
         ? { dx: 135, dy: 0 + float2 } 
         : { dx: 370, dy: 0 + float2 },
@@ -326,7 +332,48 @@ export const HeroScene = () => {
         />
       </svg>
 
-      {/* Face Interactive Hover Boundary Container */}
+      {/* Floating Social Handles (placed relative to main viewport to prevent container clipping, keeping mouse listeners active) */}
+      <SocialBubble 
+        href="https://instagram.com/" 
+        icon="instagram" 
+        isFaceHovered={isFaceHovered} 
+        style={{ 
+          left: ex1, 
+          top: ey1, 
+          transform: "translate(-50%, -50%)",
+          animationDelay: "0s" 
+        }}
+        onMouseEnter={() => setIsFaceHovered(true)}
+        onMouseLeave={() => setIsFaceHovered(false)}
+      />
+      <SocialBubble 
+        href="https://www.linkedin.com/in/shikharuikey/" 
+        icon="linkedin" 
+        isFaceHovered={isFaceHovered} 
+        style={{ 
+          left: ex2, 
+          top: ey2, 
+          transform: "translate(-50%, -50%)",
+          animationDelay: "1.3s" 
+        }}
+        onMouseEnter={() => setIsFaceHovered(true)}
+        onMouseLeave={() => setIsFaceHovered(false)}
+      />
+      <SocialBubble 
+        href="https://github.com/ShikharUikey" 
+        icon="github" 
+        isFaceHovered={isFaceHovered} 
+        style={{ 
+          left: ex3, 
+          top: ey3, 
+          transform: "translate(-50%, -50%)",
+          animationDelay: "2.6s" 
+        }}
+        onMouseEnter={() => setIsFaceHovered(true)}
+        onMouseLeave={() => setIsFaceHovered(false)}
+      />
+
+      {/* Face Interactive Hover Trigger Zone */}
       <div 
         className="absolute right-0 top-0 w-full md:w-[48%] h-full z-20"
         onMouseEnter={() => setIsFaceHovered(true)}
@@ -334,38 +381,6 @@ export const HeroScene = () => {
       >
         {/* Invisible Clickable Trigger */}
         <div className="absolute inset-0 cursor-pointer" />
-
-        {/* Floating Social Handles (appear on face hover, centered math positions with live float) */}
-        <SocialBubble 
-          href="https://instagram.com/" 
-          icon="instagram" 
-          isFaceHovered={isFaceHovered} 
-          style={{ 
-            left: ex1, 
-            top: ey1, 
-            animationDelay: "0s" 
-          }}
-        />
-        <SocialBubble 
-          href="https://www.linkedin.com/in/shikharuikey/" 
-          icon="linkedin" 
-          isFaceHovered={isFaceHovered} 
-          style={{ 
-            left: ex2, 
-            top: ey2, 
-            animationDelay: "1.3s" 
-          }}
-        />
-        <SocialBubble 
-          href="https://github.com/ShikharUikey" 
-          icon="github" 
-          isFaceHovered={isFaceHovered} 
-          style={{ 
-            left: ex3, 
-            top: ey3, 
-            animationDelay: "2.6s" 
-          }}
-        />
       </div>
     </section>
   );
