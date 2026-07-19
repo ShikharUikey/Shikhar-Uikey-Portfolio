@@ -150,5 +150,39 @@ export const projectsContent = {
       description: "An AI-powered cinematic location scouting platform that helps filmmakers discover perfect shooting locations using intelligent reference-image matching.",
       imagePlaceholder: "bg-[#1A1A1A]"
     }
+  ] as Project[],
+  featuredProjects: [
+    {
+      id: "F01",
+      category: "Generative AI",
+      title: "AURA CODING CO-PILOT",
+      description: "An autonomous agentic workflow orchestrator capable of pair-programming, test generation, and deep debugging.",
+      imagePlaceholder: "bg-[#0b1b10]",
+      image: "/images/featured-co-pilot.jpg"
+    },
+    {
+      id: "F02",
+      category: "3D Simulation",
+      title: "CYBER CITY 3D WORLD",
+      description: "A complete WebGL-based virtual simulation of a sci-fi city with real-time lighting and camera paths.",
+      imagePlaceholder: "bg-[#181124]",
+      image: "/images/featured-cyber3d.jpg"
+    },
+    {
+      id: "F03",
+      category: "Audio Processing",
+      title: "SOUNDSPACE OSCILLATOR",
+      description: "An interactive synthesizer mapping hand movements to complex audio signals using the Web Audio API.",
+      imagePlaceholder: "bg-[#1a0e0e]",
+      image: "/images/featured-soundspace.jpg"
+    },
+    {
+      id: "F04",
+      category: "Creative Sandbox",
+      title: "KINETIC PHYSICS LAYER",
+      description: "A 2D rigid-body physics playground allowing users to construct structures and trigger chain-reaction collapses.",
+      imagePlaceholder: "bg-[#0f172a]",
+      image: "/images/featured-physics.jpg"
+    }
   ] as Project[]
 };
