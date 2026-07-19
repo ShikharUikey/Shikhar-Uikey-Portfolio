@@ -52,7 +52,7 @@ export const AboutScene = () => {
             {/* Japanese Text Overlay */}
             <div className="absolute top-8 left-8 z-20 pointer-events-none drop-shadow-md">
               <div className="inline-block p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
-                <span className="text-white text-5xl tracking-[0.5em] opacity-90" style={{ fontFamily: '"Yuji Syuku", serif', writingMode: 'vertical-rl' }}>
+                <span className="text-white text-5xl tracking-[0.5em] opacity-90" style={{ fontFamily: 'var(--font-japanese)', writingMode: 'vertical-rl' }}>
                   創造者
                 </span>
               </div>
