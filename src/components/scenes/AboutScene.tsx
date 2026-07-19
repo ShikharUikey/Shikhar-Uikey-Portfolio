@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { aboutContent } from "@/content";
 import { CinematicTitle } from "@/components/ui/CinematicTitle";
 import { CinematicRevealText } from "@/components/ui/CinematicRevealText";
 
 export const AboutScene = () => {
   const containerRef = useRef(null);
+  const [showPreview, setShowPreview] = useState(false);
   
   // Track the scroll progress of this specific section
   const { scrollYProgress } = useScroll({
@@ -23,6 +24,18 @@ export const AboutScene = () => {
   const yImage = useTransform(scrollYProgress, [0, 1], [50, 0]);
   const opacityImage = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
 
+  // Lock body scroll when preview is open
+  useEffect(() => {
+    if (showPreview) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showPreview]);
+
   return (
     <section 
       id="about"
@@ -33,13 +46,14 @@ export const AboutScene = () => {
         
         {/* Interactive Image Overlay with Scroll Parallax */}
         <motion.div 
+          onClick={() => setShowPreview(true)}
           style={{ 
             y: yImage, 
             opacity: opacityImage,
             maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)"
           }}
-          className="relative w-full md:w-1/2 h-[350px] sm:h-[450px] md:h-[600px] group"
+          className="relative w-full md:w-1/2 h-[350px] sm:h-[450px] md:h-[600px] group cursor-pointer"
         >
           {/* Glassmorphic/Blurred Border Effect container */}
           <div className="absolute inset-0 z-10 pointer-events-none rounded-3xl border border-white/10 shadow-[inset_0_0_40px_rgba(255,255,255,0.05)] mix-blend-overlay"></div>
@@ -100,6 +114,50 @@ export const AboutScene = () => {
           </CinematicRevealText>
         </div>
       </div>
+
+      {/* Photo Preview Lightbox Modal */}
+      <AnimatePresence>
+        {showPreview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-12 cursor-pointer"
+            onClick={() => setShowPreview(false)}
+          >
+            {/* Close Button */}
+            <button 
+              className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-white transition-colors z-[60]"
+              onClick={() => setShowPreview(false)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 md:w-10 md:h-10">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Modal Image container */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-5xl w-full max-h-[80vh] flex flex-col items-center justify-center cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src="/images/about-me.jpg" 
+                alt="Shikhar Uikey Preview"
+                className="max-w-full max-h-[75vh] object-contain shadow-2xl rounded-2xl border border-white/10"
+              />
+              <div className="mt-4 text-center">
+                <span className="text-sm font-mono text-[var(--color-accent-matcha)] tracking-[0.3em] uppercase">
+                  Shikhar Uikey — The Creator
+                </span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
