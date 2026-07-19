@@ -66,7 +66,7 @@ const SocialBubble = ({
 export const HeroScene = () => {
   const [isFaceHovered, setIsFaceHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
-  const [origin, setOrigin] = useState({ x: 500, y: 400 });
+  const [origin, setOrigin] = useState({ x: 580, y: 400 });
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -75,11 +75,11 @@ export const HeroScene = () => {
       const h = window.innerHeight;
       setDimensions({ w, h });
       if (w < 768) {
-        // Mobile coordinates next to ear
-        setOrigin({ x: w * 0.50, y: h * 0.44 });
+        // Mobile coordinates next to ear profile
+        setOrigin({ x: w * 0.54, y: h * 0.44 });
       } else {
-        // Desktop coordinates next to the visible ear
-        setOrigin({ x: w * 0.52, y: h * 0.47 });
+        // Desktop coordinates positioned to place curves immediately behind/after the visible ear
+        setOrigin({ x: w * 0.57, y: h * 0.48 });
       }
     };
     handleResize();
@@ -114,20 +114,20 @@ export const HeroScene = () => {
       r2: isMobile ? 55 : 85,
       insta: isMobile 
         ? { dx: 110, dy: -70 + float1 } 
-        : { dx: 310, dy: -140 + float1 },
+        : { dx: 260, dy: -140 + float1 },
       linkedin: isMobile 
         ? { dx: 135, dy: 0 + float2 } 
-        : { dx: 370, dy: 0 + float2 },
+        : { dx: 320, dy: 0 + float2 },
       github: isMobile 
         ? { dx: 110, dy: 70 + float3 } 
-        : { dx: 310, dy: 130 + float3 }
+        : { dx: 260, dy: 130 + float3 }
     };
   };
 
   const offsets = getOffsets();
   const rad = Math.PI / 4.2; // ~42 degrees arc bounds
 
-  // Inner arc coords
+  // Inner arc coords (centered on origin, arc renders to the right of origin)
   const ix1 = origin.x + offsets.r1 * Math.cos(-rad);
   const iy1 = origin.y + offsets.r1 * Math.sin(-rad);
   const ix2 = origin.x + offsets.r1 * Math.cos(rad);
@@ -256,7 +256,7 @@ export const HeroScene = () => {
           </filter>
         </defs>
 
-        {/* Concentric Inner Arc (Styling Only, next to Ear) */}
+        {/* Concentric Inner Arc (Styling Only, positioned behind ear) */}
         <motion.path 
           d={pathInner}
           fill="none"
