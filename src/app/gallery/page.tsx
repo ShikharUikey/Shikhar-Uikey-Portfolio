@@ -10,9 +10,24 @@ export default function GalleryPage() {
   const items = galleryProject?.galleryItems || [];
   
   const [selectedItem, setSelectedItem] = useState<{type: string, url: string, quoteJP: string, quoteEN: string} | null>(null);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [radius, setRadius] = useState({ rx: 320, ry: 220 });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const handleResize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w < 640) {
+        setRadius({ rx: w * 0.32, ry: h * 0.15 });
+      } else if (w < 1024) {
+        setRadius({ rx: w * 0.28, ry: h * 0.18 });
+      } else {
+        setRadius({ rx: w * 0.25, ry: h * 0.22 });
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Lock body scroll when modal is open
@@ -28,95 +43,131 @@ export default function GalleryPage() {
   }, [selectedItem]);
 
   return (
-    <main className="relative min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] pt-20 md:pt-32 pb-16 md:pb-24">
-      <div className="max-w-7xl mx-auto w-full px-6 relative z-10">
-        
-        {/* Navigation */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <Link href="/" className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-matcha)] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
-            <span className="font-medium tracking-wider uppercase text-sm">Return to Lobby</span>
-          </Link>
-        </motion.div>
+    <main className="relative h-screen w-screen bg-black text-[var(--color-text-primary)] overflow-hidden flex items-center justify-center">
+      {/* Return Button */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="absolute top-6 left-6 z-30"
+      >
+        <Link href="/" className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-matcha)] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          <span className="font-mono tracking-widest uppercase text-xs">Return</span>
+        </Link>
+      </motion.div>
 
-        {/* Exhibition Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-12 md:mb-24 text-center border-b border-[var(--color-border)] pb-10 md:pb-16"
-        >
-          <span className="cursive-accent text-3xl block text-[var(--color-accent-matcha)] mb-6">
-            The Digital Gallery
-          </span>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 md:mb-8 drop-shadow-xl tracking-tighter uppercase">
-            EXHIBITION 02
-          </h1>
-          <p className="text-base sm:text-xl md:text-2xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed px-2">
-            A curated space of ephemeral moments, guided by the timeless wisdom of Ikigai.
-          </p>
-        </motion.div>
+      {/* Orbit Centerpiece */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
+        <div className="relative w-24 h-24 flex items-center justify-center">
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border border-white/10 rounded-full border-dashed"
+          />
+          <div className="absolute w-2 h-2 bg-[var(--color-accent-matcha)] rounded-full animate-ping" />
+          <span className="absolute text-[8px] font-mono tracking-[0.3em] text-white/40 mt-20">EXHB.02</span>
+        </div>
+      </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24">
-          {items.map((item, idx) => (
+      {/* Circular Carousel */}
+      <div className="relative w-full h-full max-w-7xl max-h-[80vh] z-10">
+        {items.map((item, idx) => {
+          // Angle offset by -90 deg so the first item starts at the top center
+          const angle = (idx / items.length) * 2 * Math.PI - Math.PI / 2;
+          const x = Math.cos(angle) * radius.rx;
+          const y = Math.sin(angle) * radius.ry;
+
+          const isHovered = hoveredIdx === idx;
+          const isAnyHovered = hoveredIdx !== null;
+
+          return (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 1, delay: idx * 0.2 }}
-              className={`flex flex-col ${idx % 2 !== 0 ? 'md:mt-32' : ''}`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: isAnyHovered ? (isHovered ? 1.0 : 0.25) : 0.75,
+                scale: isHovered ? 1.35 : 1.0,
+                x,
+                y,
+                filter: isAnyHovered ? (isHovered ? "grayscale(0%) blur(0px)" : "grayscale(80%) blur(1px)") : "grayscale(50%) blur(0px)",
+                zIndex: isHovered ? 40 : 10
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 120, 
+                damping: 18,
+                opacity: { duration: 0.3 }
+              }}
+              style={{
+                left: "50%",
+                top: "50%",
+              }}
+              className="absolute -translate-x-1/2 -translate-y-1/2 w-20 h-15 sm:w-32 sm:h-24 md:w-52 md:h-36 rounded-md overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl cursor-pointer"
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              onClick={() => setSelectedItem(item as any)}
             >
-              {/* Media Container */}
-              <div 
-                className="relative group overflow-hidden rounded-sm bg-[#111] shadow-2xl mb-8 border border-[var(--color-border)] cursor-pointer"
-                onClick={() => setSelectedItem(item as any)}
-              >
-                {item.type === "photo" ? (
-                  <img 
-                    src={item.url} 
-                    alt={`Gallery exhibition piece ${idx + 1}`}
-                    className="w-full h-auto aspect-[3/4] sm:aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
-                  />
-                ) : (
-                  <video 
-                    src={item.url} 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline
-                    className="w-full h-auto aspect-[3/4] sm:aspect-[4/5] md:aspect-square object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
-                  />
-                )}
-                
-                {/* Subtle Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              </div>
-
-              {/* Typography / Quote */}
-              <div className="flex flex-col items-center text-center px-4">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[var(--color-text-primary)] mb-3 md:mb-4 tracking-widest font-light">
-                  {item.quoteJP}
-                </h3>
-                <p className="text-sm sm:text-lg text-[var(--color-accent-matcha)] italic font-light tracking-wide uppercase">
-                  "{item.quoteEN}"
-                </p>
-                
-                {/* Decorative Line */}
-                <div className="w-12 h-[1px] bg-[var(--color-text-secondary)]/30 mt-8"></div>
-              </div>
+              {item.type === "photo" ? (
+                <img 
+                  src={item.url} 
+                  alt={`Exhibition piece ${idx + 1}`}
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                />
+              ) : (
+                <video 
+                  src={item.url} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                />
+              )}
+              {/* Overlay vignette */}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
             </motion.div>
-          ))}
-        </div>
-        
+          );
+        })}
+      </div>
+
+      {/* Bottom Editorial Details Panel */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-2xl px-6 text-center select-none pointer-events-none z-30">
+        <AnimatePresence mode="wait">
+          {hoveredIdx !== null ? (
+            <motion.div
+              key={hoveredIdx}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25 }}
+              className="flex flex-col items-center"
+            >
+              <span className="text-[10px] font-mono text-[var(--color-accent-matcha)] tracking-[0.3em] uppercase mb-1">
+                Piece 0{hoveredIdx + 1}
+              </span>
+              <h2 className="text-xl sm:text-3xl font-japanese font-bold text-white tracking-widest mb-1.5" style={{ fontFamily: 'var(--font-japanese)' }}>
+                {items[hoveredIdx].quoteJP}
+              </h2>
+              <p className="text-[10px] sm:text-xs text-[var(--color-text-secondary)] italic uppercase tracking-[0.2em] font-light">
+                "{items[hoveredIdx].quoteEN}"
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="default"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center text-[var(--color-text-secondary)] font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] font-light"
+            >
+              <span>EXHIBITION 02 — THE DIGITAL GALLERY</span>
+              <span className="text-[9px] mt-1.5 text-gray-600 tracking-[0.2em]">HOVER TO EXPLORE FRAMES</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Lightbox Modal */}
@@ -131,7 +182,7 @@ export default function GalleryPage() {
           >
             {/* Close Button */}
             <button 
-              className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-white transition-colors z-[60]"
+              className="absolute top-6 right-6 md:top-10 md:right-10 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors z-[60]"
               onClick={() => setSelectedItem(null)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 md:w-10 md:h-10">
