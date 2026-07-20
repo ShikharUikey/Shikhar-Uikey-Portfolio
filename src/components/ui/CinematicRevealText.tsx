@@ -6,12 +6,14 @@ export const CinematicRevealText = ({
   children, 
   revealText, 
   textSizeClass = "text-6xl sm:text-7xl md:text-9xl",
-  maskRadius = 120
+  maskRadius = 120,
+  revealFontFamily = "var(--font-japanese)"
 }: { 
   children: React.ReactNode; 
   revealText: string;
   textSizeClass?: string;
   maskRadius?: number;
+  revealFontFamily?: string;
 }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -49,7 +51,7 @@ export const CinematicRevealText = ({
         {children}
       </div>
 
-      {/* Hidden Overlay Layer: Giant Japanese "アーティスト" (Artist) */}
+      {/* Hidden Overlay Layer */}
       {/* This layer sits on top but is only visible where the cursor highlights it */}
       <div 
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-20"
@@ -57,7 +59,7 @@ export const CinematicRevealText = ({
         <span 
           className={`${textSizeClass} font-black text-[var(--color-accent-warm)] tracking-widest transition-opacity duration-300 text-center block w-full`}
           style={{
-            fontFamily: 'var(--font-japanese)',
+            fontFamily: revealFontFamily,
             opacity: isHovered ? 1.0 : 0,
             WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,
             maskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,

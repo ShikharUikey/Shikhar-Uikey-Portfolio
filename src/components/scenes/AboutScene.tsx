@@ -99,7 +99,7 @@ export const AboutScene = () => {
             />
           </motion.div>
           
-          <CinematicRevealText revealText="アーティスト">
+          <CinematicRevealText revealText="कलाकार" revealFontFamily="var(--font-hindi)">
             <div className="space-y-6 text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed font-light">
               {aboutContent.paragraphs.map((paragraph, index) => {
                 // Creating a staggered parallax effect for each paragraph
