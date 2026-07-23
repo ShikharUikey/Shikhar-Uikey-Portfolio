@@ -154,19 +154,21 @@ export const projectsContent = {
   featuredProjects: [
     {
       id: "F01",
-      category: "Generative AI",
-      title: "AURA CODING CO-PILOT",
-      description: "An autonomous agentic workflow orchestrator capable of pair-programming, test generation, and deep debugging.",
-      imagePlaceholder: "bg-[#0b1b10]",
-      image: "/images/featured-co-pilot.jpg"
+      category: "Web Development",
+      title: "SHUBH BHOJ CATERING",
+      description: "A premium wedding catering and corporate event management platform built for Shubh Bhoj in Delhi NCR.",
+      imagePlaceholder: "bg-[#5A001A]",
+      link: "https://new-shubh-bhoj-catering-events.vercel.app/",
+      image: "https://new-shubh-bhoj-catering-events.vercel.app/gallery-5.jpg"
     },
     {
       id: "F02",
-      category: "3D Simulation",
-      title: "CYBER CITY 3D WORLD",
-      description: "A complete WebGL-based virtual simulation of a sci-fi city with real-time lighting and camera paths.",
-      imagePlaceholder: "bg-[#181124]",
-      image: "/images/featured-cyber3d.jpg"
+      category: "Web Development",
+      title: "TEA TORIA CAFE",
+      description: "A vibrant, modern cafe website showcasing authentic tandoor chai and delicious food across Delhi NCR and Bhopal.",
+      imagePlaceholder: "bg-[#2d4a22]",
+      link: "https://www.teatoria.in/",
+      image: "https://www.teatoria.in/images/tea-toria-logo-green.jpg"
     },
     {
       id: "F03",
