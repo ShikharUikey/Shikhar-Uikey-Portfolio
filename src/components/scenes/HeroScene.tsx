@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { animateHeroText } from "@/animations/engine";
 import { heroContent } from "@/content";
 
@@ -13,7 +13,8 @@ const SocialBubble = ({
   style,
   onMouseEnter,
   onMouseLeave,
-  ariaLabel
+  ariaLabel,
+  tooltip
 }: { 
   href: string; 
   icon: "instagram" | "linkedin" | "github"; 
@@ -22,30 +23,44 @@ const SocialBubble = ({
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   ariaLabel: string;
+  tooltip: string;
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       style={style}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        onMouseEnter?.();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        onMouseLeave?.();
+      }}
       aria-label={ariaLabel}
       title={ariaLabel}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
-        scale: isFaceHovered ? 1 : 0, 
+        scale: isFaceHovered ? (isHovered ? 1.15 : 1) : 0, 
         opacity: isFaceHovered ? 1 : 0
       }}
       transition={{ 
-        scale: { type: "spring", stiffness: 200, damping: 15 },
+        scale: { type: "spring", stiffness: 240, damping: 18 },
         opacity: { duration: 0.25 }
       }}
-      className={`absolute z-30 p-4 sm:p-5 rounded-full bg-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] text-white hover:text-[var(--color-accent-matcha)] hover:border-[var(--color-accent-matcha)] hover:scale-110 transition-transform duration-300 flex items-center justify-center cursor-pointer ${
+      className={`group absolute z-30 p-4 sm:p-5 rounded-full bg-black/40 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-white hover:text-[var(--color-accent-matcha)] hover:border-[var(--color-accent-matcha)] transition-all duration-300 flex items-center justify-center cursor-pointer ${
         isFaceHovered ? "pointer-events-auto animate-float-gentle" : "pointer-events-none"
       }`}
     >
+      {/* Tooltip Tag */}
+      <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-black/80 backdrop-blur-md border border-white/10 text-[10px] tracking-widest uppercase font-mono text-[var(--color-accent-matcha)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">
+        {tooltip}
+      </div>
+
       {icon === "instagram" && (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -73,6 +88,27 @@ export const HeroScene = () => {
   const [origin, setOrigin] = useState({ x: 600, y: 350 });
   const [time, setTime] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Smooth mouse parallax physics
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { damping: 25, stiffness: 100 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  // Background Parallax translations
+  const bgX = useTransform(smoothMouseX, [-500, 500], [18, -18]);
+  const bgY = useTransform(smoothMouseY, [-500, 500], [18, -18]);
+  const textParallaxX = useTransform(smoothMouseX, [-500, 500], [-10, 10]);
+  const textParallaxY = useTransform(smoothMouseY, [-500, 500], [-10, 10]);
+
+  const handleGlobalMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set(clientX - innerWidth / 2);
+    mouseY.set(clientY - innerHeight / 2);
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -81,10 +117,8 @@ export const HeroScene = () => {
       const h = window.innerHeight;
       setDimensions({ w, h });
       if (w < 768) {
-        // Mobile coordinates next to ear profile
         setOrigin({ x: w * 0.58, y: h * 0.40 });
       } else {
-        // Desktop coordinates positioned to place curves immediately behind/after the visible ear
         setOrigin({ x: w * 0.61, y: h * 0.43 });
       }
     };
@@ -105,11 +139,8 @@ export const HeroScene = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isFaceHovered]);
 
-  // Helper offsets for responsive circular constellation elements (including live breathing offsets)
   const getOffsets = () => {
     const isMobile = dimensions.w < 768;
-    
-    // Subtle sinusoidal floating values
     const floatAmp = isMobile ? 3 : 8;
     const float1 = isFaceHovered ? Math.sin(time) * floatAmp : 0;
     const float2 = isFaceHovered ? Math.sin(time + 2.0) * floatAmp : 0;
@@ -131,24 +162,21 @@ export const HeroScene = () => {
   };
 
   const offsets = getOffsets();
-  const rad = Math.PI / 4.2; // ~42 degrees arc bounds
+  const rad = Math.PI / 4.2;
 
-  // Inner arc coords (centered on origin, arc renders to the right of origin)
   const ix1 = origin.x + offsets.r1 * Math.cos(-rad);
   const iy1 = origin.y + offsets.r1 * Math.sin(-rad);
   const ix2 = origin.x + offsets.r1 * Math.cos(rad);
   const iy2 = origin.y + offsets.r1 * Math.sin(rad);
   const pathInner = `M ${ix1} ${iy1} A ${offsets.r1} ${offsets.r1} 0 0 1 ${ix2} ${iy2}`;
 
-  // Outer arc coords
   const ox1 = origin.x + offsets.r2 * Math.cos(-rad);
   const oy1 = origin.y + offsets.r2 * Math.sin(-rad);
   const ox2 = origin.x + offsets.r2 * Math.cos(rad);
   const oy2 = origin.y + offsets.r2 * Math.sin(rad);
   const pathOuter = `M ${ox1} ${oy1} A ${offsets.r2} ${offsets.r2} 0 0 1 ${ox2} ${oy2}`;
 
-  // Connecting lines start coords on outer arc
-  const l_rad = Math.PI / 6.2; // Spreading angle
+  const l_rad = Math.PI / 6.2;
   const sx1 = origin.x + offsets.r2 * Math.cos(-l_rad);
   const sy1 = origin.y + offsets.r2 * Math.sin(-l_rad);
   const sx2 = origin.x + offsets.r2;
@@ -156,7 +184,6 @@ export const HeroScene = () => {
   const sx3 = origin.x + offsets.r2 * Math.cos(l_rad);
   const sy3 = origin.y + offsets.r2 * Math.sin(l_rad);
 
-  // Bubble center coordinates (real-time updating with float)
   const ex1 = origin.x + offsets.insta.dx;
   const ey1 = origin.y + offsets.insta.dy;
   const ex2 = origin.x + offsets.linkedin.dx;
@@ -164,29 +191,68 @@ export const HeroScene = () => {
   const ex3 = origin.x + offsets.github.dx;
   const ey3 = origin.y + offsets.github.dy;
 
+  const skillPills = [
+    { label: "CREATIVE TECHNOLOGIST", id: "01" },
+    { label: "CINEMATOGRAPHER & EDITOR", id: "02" },
+    { label: "AI & WEB ARCHITECT", id: "03" }
+  ];
+
   return (
-    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black snap-start">
-      {/* Background Image Setup */}
-      <div className="absolute inset-0 z-0">
+    <section 
+      ref={containerRef}
+      onMouseMove={handleGlobalMouseMove}
+      className="h-screen flex flex-col justify-between relative overflow-hidden bg-[#050505] snap-start select-none"
+    >
+      {/* Background Image Parallax Setup */}
+      <motion.div 
+        style={{ x: bgX, y: bgY, scale: 1.05 }}
+        className="absolute inset-0 z-0 will-change-transform"
+      >
         <Image 
           src="/images/hero-bg.jpg" 
           alt="Cinematic Background" 
           fill 
           priority
-          className="object-cover object-center opacity-90 animate-[fade-in_1s_ease-out]"
+          className="object-cover object-center opacity-85 transition-opacity duration-1000"
         />
-        {/* Cinematic Gradient Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-black/20 to-transparent"></div>
-      </div>
-      
-      {/* Minimal vertical text on the side */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-xs font-bold tracking-[0.3em] uppercase text-white/50 hidden md:block z-10">
-        Shikhar Uikey — Portfolio
+        {/* Cinematic Vignette & Ambient Radial Glow */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-black/30 to-black/60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,230,118,0.08),rgba(255,51,102,0.05)_50%,transparent_100%)]" />
+      </motion.div>
+
+      {/* Atmospheric Floating Light Specks / Bokeh Dust */}
+      <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+        <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 rounded-full bg-[var(--color-accent-matcha)] opacity-40 blur-[1px] animate-ping" style={{ animationDuration: "4s" }} />
+        <div className="absolute top-[65%] left-[25%] w-1 h-1 rounded-full bg-white opacity-30 blur-[0.5px] animate-pulse" style={{ animationDuration: "3s" }} />
+        <div className="absolute top-[35%] right-[20%] w-2 h-2 rounded-full bg-[var(--color-accent-warm)] opacity-35 blur-[1px] animate-pulse" style={{ animationDuration: "5s" }} />
+        <div className="absolute top-[80%] right-[35%] w-1.5 h-1.5 rounded-full bg-white opacity-20 animate-ping" style={{ animationDuration: "6s" }} />
       </div>
 
-      {/* Main Typography (Editorial Italic Style) */}
+      {/* Japanese Background Kanji Watermark */}
+      <div 
+        className="absolute right-12 top-1/2 -translate-y-1/2 text-8xl md:text-9xl font-black opacity-[0.03] text-white pointer-events-none select-none z-0 hidden lg:block tracking-[0.5em]"
+        style={{ fontFamily: 'var(--font-japanese)', writingMode: 'vertical-rl' }}
+      >
+        創造者・映画
+      </div>
+
+      {/* Top Header / Meta Status Bar */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-16 pt-8 flex items-center justify-between text-xs font-mono tracking-widest text-white/50">
+        <div className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-accent-matcha)] animate-pulse shadow-[0_0_8px_var(--color-accent-matcha)]" />
+          <span className="text-white/80 font-medium">AVAILABLE FOR SELECTIVE COMMISSIONS</span>
+        </div>
+        <div className="hidden md:flex items-center gap-4 text-white/40">
+          <span>PORTFOLIO 2026</span>
+          <span>•</span>
+          <span>NEW DELHI / REMOTE</span>
+        </div>
+      </div>
+
+      {/* Main Typography & Floating Skills */}
       <motion.div 
-        className="relative z-10 text-left w-full max-w-7xl mx-auto px-6 md:px-24 pointer-events-none select-none"
+        style={{ x: textParallaxX, y: textParallaxY }}
+        className="relative z-20 text-left w-full max-w-7xl mx-auto px-6 md:px-16 my-auto pointer-events-none select-none will-change-transform"
         initial="hidden"
         animate={{ 
           opacity: isFaceHovered ? 0 : 1,
@@ -196,63 +262,97 @@ export const HeroScene = () => {
         variants={animateHeroText}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h2 className="italic font-semibold text-2xl md:text-4xl mb-2 text-gray-300">
-          {heroContent.subheadline}
-        </h2>
-        <h1 className="italic font-black text-4xl sm:text-6xl md:text-[10rem] leading-[0.9] tracking-tighter mb-6 md:mb-8 text-white drop-shadow-lg">
+        {/* Eyebrow / Subheadline */}
+        <div className="inline-flex items-center gap-2 mb-3">
+          <span className="w-8 h-[1px] bg-[var(--color-accent-warm)]" />
+          <h2 className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-[0.3em] text-[var(--color-accent-warm)] font-semibold">
+            {heroContent.subheadline}
+          </h2>
+        </div>
+
+        {/* Hero Title */}
+        <h1 className="italic font-black text-5xl sm:text-7xl md:text-[9.5rem] leading-[0.88] tracking-tighter mb-6 text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
           {heroContent.headline}
         </h1>
-        <div className="inline-block p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
-          <p className="text-lg md:text-xl font-light text-gray-300 max-w-2xl">
+
+        {/* Floating Interactive Skill Pills */}
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-6 pointer-events-auto">
+          {skillPills.map((pill) => (
+            <motion.div
+              key={pill.id}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 hover:border-[var(--color-accent-matcha)] transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-default"
+            >
+              <span className="text-[10px] font-mono text-[var(--color-accent-matcha)] font-bold">
+                {pill.id}
+              </span>
+              <span className="text-xs sm:text-xs font-mono tracking-wider text-gray-200">
+                {pill.label}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Description Glass Container */}
+        <div className="inline-block p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] max-w-xl">
+          <p className="text-base sm:text-lg md:text-xl font-light text-gray-300 leading-relaxed">
             {heroContent.description}
           </p>
         </div>
       </motion.div>
       
-      {/* Ikigai Quote (Bottom Left) */}
-      <motion.div 
-        className="absolute bottom-10 left-6 md:bottom-16 md:left-24 z-10 pointer-events-none select-none"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ 
-          opacity: isFaceHovered ? 0 : 1,
-          x: isFaceHovered ? -15 : 0
-        }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="inline-block p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
-          <div className="flex flex-col gap-1 border-l-4 border-[var(--color-accent-warm)] pl-4">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-400">
-              Philosophy
-            </span>
-            <span className="text-2xl md:text-4xl font-black mt-2 text-white">
-              {heroContent.backgroundQuote}
-            </span>
-            <span className="text-sm italic text-gray-400 mt-1">
-              "{heroContent.quoteTranslation}"
-            </span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* CTA Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isFaceHovered ? 0 : 0.6 }}
-        transition={{ duration: 0.4 }}
-        className="absolute bottom-[5vh] right-6 md:right-16 flex flex-col items-center gap-4 z-10 pointer-events-none select-none"
-      >
-        <span 
-          className="text-[10px] tracking-[0.3em] uppercase font-bold text-white rotate-180"
-          style={{ writingMode: 'vertical-rl' }}
+      {/* Bottom Bar: Philosophy Card (Left) & Magnetic Scroll Pill (Right) */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-16 pb-8 md:pb-12 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+        {/* Ikigai Philosophy Quote (Bottom Left) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ 
+            opacity: isFaceHovered ? 0 : 1,
+            x: isFaceHovered ? -15 : 0
+          }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-none select-none"
         >
-          {heroContent.cta}
-        </span>
-        <div className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent"></div>
-      </motion.div>
+          <div className="inline-block p-4 sm:p-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+            <div className="flex flex-col gap-1 border-l-3 border-[var(--color-accent-warm)] pl-3.5">
+              <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-400 font-mono">
+                CORE PHILOSOPHY
+              </span>
+              <span className="text-xl sm:text-2xl font-black text-white mt-1" style={{ fontFamily: 'var(--font-japanese)' }}>
+                {heroContent.backgroundQuote}
+              </span>
+              <span className="text-xs italic text-gray-400">
+                &quot;{heroContent.quoteTranslation}&quot;
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Magnetic Interactive Scroll CTA (Bottom Right) */}
+        <motion.a
+          href="#work"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: isFaceHovered ? 0 : 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          whileHover={{ scale: 1.06, y: -3 }}
+          whileTap={{ scale: 0.95 }}
+          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/15 hover:border-[var(--color-accent-matcha)] text-white/80 hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer group"
+        >
+          <span className="text-xs font-mono uppercase tracking-[0.25em] font-semibold text-gray-300 group-hover:text-[var(--color-accent-matcha)] transition-colors">
+            {heroContent.cta} WORKS
+          </span>
+          <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[var(--color-accent-matcha)] group-hover:text-black transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3 h-3 group-hover:translate-y-0.5 transition-transform">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </div>
+        </motion.a>
+      </div>
 
       {/* Glowing Star Arcs & Constellation Connections SVG Overlay */}
       {isMounted && (
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
           <defs>
             <filter id="glow-accent" x="-30%" y="-30%" width="160%" height="160%">
               <feGaussianBlur stdDeviation="4" result="blur" />
@@ -263,7 +363,7 @@ export const HeroScene = () => {
             </filter>
           </defs>
 
-          {/* Concentric Inner Arc (Styling Only, positioned behind ear) */}
+          {/* Concentric Inner Arc */}
           <motion.path 
             d={pathInner}
             fill="none"
@@ -278,7 +378,7 @@ export const HeroScene = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           />
 
-          {/* Concentric Outer Arc (Connected to branches) */}
+          {/* Concentric Outer Arc */}
           <motion.path 
             d={pathOuter}
             fill="none"
@@ -297,8 +397,9 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx1} y1={sy1}
             x2={ex1} y2={ey1}
-            stroke="rgba(0, 230, 118, 0.65)"
-            strokeWidth={1.4}
+            stroke="rgba(0, 230, 118, 0.75)"
+            strokeWidth={1.5}
+            strokeDasharray="6 6"
             filter="url(#glow-accent)"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
@@ -312,8 +413,9 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx2} y1={sy2}
             x2={ex2} y2={ey2}
-            stroke="rgba(0, 230, 118, 0.65)"
-            strokeWidth={1.4}
+            stroke="rgba(0, 230, 118, 0.75)"
+            strokeWidth={1.5}
+            strokeDasharray="6 6"
             filter="url(#glow-accent)"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
@@ -327,8 +429,9 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx3} y1={sy3}
             x2={ex3} y2={ey3}
-            stroke="rgba(0, 230, 118, 0.65)"
-            strokeWidth={1.4}
+            stroke="rgba(0, 230, 118, 0.75)"
+            strokeWidth={1.5}
+            strokeDasharray="6 6"
             filter="url(#glow-accent)"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
@@ -340,7 +443,7 @@ export const HeroScene = () => {
         </svg>
       )}
 
-      {/* Floating Social Handles */}
+      {/* Floating Social Handles with Tooltips */}
       {isMounted && (
         <>
           <SocialBubble 
@@ -348,6 +451,7 @@ export const HeroScene = () => {
             icon="instagram" 
             isFaceHovered={isFaceHovered} 
             ariaLabel="Instagram"
+            tooltip="@shikhar.uikey"
             style={{ 
               left: ex1, 
               top: ey1, 
@@ -362,6 +466,7 @@ export const HeroScene = () => {
             icon="linkedin" 
             isFaceHovered={isFaceHovered} 
             ariaLabel="LinkedIn"
+            tooltip="Connect on LinkedIn"
             style={{ 
               left: ex2, 
               top: ey2, 
@@ -376,6 +481,7 @@ export const HeroScene = () => {
             icon="github" 
             isFaceHovered={isFaceHovered} 
             ariaLabel="GitHub"
+            tooltip="View GitHub Repos"
             style={{ 
               left: ex3, 
               top: ey3, 
@@ -390,11 +496,10 @@ export const HeroScene = () => {
 
       {/* Face Interactive Hover Trigger Zone */}
       <div 
-        className="absolute right-0 top-0 w-full md:w-[48%] h-full z-20"
+        className="absolute right-0 top-0 w-full md:w-[48%] h-full z-30"
         onMouseEnter={() => setIsFaceHovered(true)}
         onMouseLeave={() => setIsFaceHovered(false)}
       >
-        {/* Invisible Clickable Trigger */}
         <div className="absolute inset-0 cursor-pointer" />
       </div>
     </section>
