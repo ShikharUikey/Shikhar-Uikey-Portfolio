@@ -201,7 +201,7 @@ export const HeroScene = () => {
     <section 
       ref={containerRef}
       onMouseMove={handleGlobalMouseMove}
-      className="h-screen flex flex-col justify-between relative overflow-hidden bg-[#050505] snap-start select-none"
+      className="h-screen flex flex-col justify-between relative overflow-hidden bg-[#050505] snap-start select-none pt-24 pb-8 md:pb-12"
     >
       {/* Background Image Parallax Setup */}
       <motion.div 
@@ -213,97 +213,85 @@ export const HeroScene = () => {
           alt="Cinematic Background" 
           fill 
           priority
-          className="object-cover object-center opacity-85 transition-opacity duration-1000"
+          className="object-cover object-[75%_center] md:object-center opacity-90 transition-opacity duration-1000"
         />
-        {/* Cinematic Vignette & Ambient Radial Glow */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-black/30 to-black/60" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,230,118,0.08),rgba(255,51,102,0.05)_50%,transparent_100%)]" />
+        {/* Cinematic Vignette & Ambient Gradient for Maximum Left-Side Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent lg:w-[75%]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-black/40" />
       </motion.div>
 
       {/* Atmospheric Floating Light Specks / Bokeh Dust */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-        <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 rounded-full bg-[var(--color-accent-matcha)] opacity-40 blur-[1px] animate-ping" style={{ animationDuration: "4s" }} />
-        <div className="absolute top-[65%] left-[25%] w-1 h-1 rounded-full bg-white opacity-30 blur-[0.5px] animate-pulse" style={{ animationDuration: "3s" }} />
-        <div className="absolute top-[35%] right-[20%] w-2 h-2 rounded-full bg-[var(--color-accent-warm)] opacity-35 blur-[1px] animate-pulse" style={{ animationDuration: "5s" }} />
-        <div className="absolute top-[80%] right-[35%] w-1.5 h-1.5 rounded-full bg-white opacity-20 animate-ping" style={{ animationDuration: "6s" }} />
+        <div className="absolute top-[25%] left-[15%] w-1.5 h-1.5 rounded-full bg-[var(--color-accent-matcha)] opacity-40 blur-[1px] animate-ping" style={{ animationDuration: "4s" }} />
+        <div className="absolute top-[65%] left-[20%] w-1 h-1 rounded-full bg-white opacity-30 blur-[0.5px] animate-pulse" style={{ animationDuration: "3s" }} />
+        <div className="absolute top-[40%] right-[25%] w-2 h-2 rounded-full bg-[var(--color-accent-warm)] opacity-35 blur-[1px] animate-pulse" style={{ animationDuration: "5s" }} />
       </div>
 
-      {/* Japanese Background Kanji Watermark */}
-      <div 
-        className="absolute right-12 top-1/2 -translate-y-1/2 text-8xl md:text-9xl font-black opacity-[0.03] text-white pointer-events-none select-none z-0 hidden lg:block tracking-[0.5em]"
-        style={{ fontFamily: 'var(--font-japanese)', writingMode: 'vertical-rl' }}
-      >
-        創造者・映画
+      {/* Main Content Container (Left Aligned, Clear of Portrait) */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 my-auto flex flex-col items-start">
+        <motion.div 
+          style={{ x: textParallaxX, y: textParallaxY }}
+          className="w-full lg:max-w-2xl text-left pointer-events-none select-none will-change-transform"
+          initial="hidden"
+          animate={{ 
+            opacity: isFaceHovered ? 0 : 1,
+            scale: isFaceHovered ? 0.96 : 1,
+            filter: isFaceHovered ? "blur(8px)" : "blur(0px)"
+          }}
+          variants={animateHeroText}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4 pointer-events-auto">
+            <span className="w-2 h-2 rounded-full bg-[var(--color-accent-matcha)] animate-pulse shadow-[0_0_8px_var(--color-accent-matcha)]" />
+            <span className="text-[11px] font-mono tracking-widest text-white/80 font-medium uppercase">
+              AVAILABLE FOR COMMISSIONS • 2026
+            </span>
+          </div>
+
+          {/* Eyebrow / Subheadline */}
+          <div className="flex items-center gap-2.5 mb-2">
+            <span className="w-6 h-[1.5px] bg-[var(--color-accent-warm)]" />
+            <h2 className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[var(--color-accent-warm)] font-semibold">
+              {heroContent.subheadline}
+            </h2>
+          </div>
+
+          {/* Hero Title */}
+          <h1 className="italic font-black text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.92] tracking-tighter mb-5 text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.9)]">
+            {heroContent.headline}
+          </h1>
+
+          {/* Floating Interactive Skill Pills */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-5 pointer-events-auto">
+            {skillPills.map((pill) => (
+              <motion.div
+                key={pill.id}
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 hover:border-[var(--color-accent-matcha)] transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-default"
+              >
+                <span className="text-[10px] font-mono text-[var(--color-accent-matcha)] font-bold">
+                  {pill.id}
+                </span>
+                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-gray-200">
+                  {pill.label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Description Glass Container */}
+          <div className="inline-block p-4 sm:p-5 rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] max-w-lg">
+            <p className="text-sm sm:text-base md:text-lg font-light text-gray-300 leading-relaxed">
+              {heroContent.description}
+            </p>
+          </div>
+        </motion.div>
       </div>
-
-      {/* Top Header / Meta Status Bar */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-16 pt-8 flex items-center justify-between text-xs font-mono tracking-widest text-white/50">
-        <div className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-[var(--color-accent-matcha)] animate-pulse shadow-[0_0_8px_var(--color-accent-matcha)]" />
-          <span className="text-white/80 font-medium">AVAILABLE FOR SELECTIVE COMMISSIONS</span>
-        </div>
-        <div className="hidden md:flex items-center gap-4 text-white/40">
-          <span>PORTFOLIO 2026</span>
-          <span>•</span>
-          <span>NEW DELHI / REMOTE</span>
-        </div>
-      </div>
-
-      {/* Main Typography & Floating Skills */}
-      <motion.div 
-        style={{ x: textParallaxX, y: textParallaxY }}
-        className="relative z-20 text-left w-full max-w-7xl mx-auto px-6 md:px-16 my-auto pointer-events-none select-none will-change-transform"
-        initial="hidden"
-        animate={{ 
-          opacity: isFaceHovered ? 0 : 1,
-          scale: isFaceHovered ? 0.96 : 1,
-          filter: isFaceHovered ? "blur(8px)" : "blur(0px)"
-        }}
-        variants={animateHeroText}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* Eyebrow / Subheadline */}
-        <div className="inline-flex items-center gap-2 mb-3">
-          <span className="w-8 h-[1px] bg-[var(--color-accent-warm)]" />
-          <h2 className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-[0.3em] text-[var(--color-accent-warm)] font-semibold">
-            {heroContent.subheadline}
-          </h2>
-        </div>
-
-        {/* Hero Title */}
-        <h1 className="italic font-black text-5xl sm:text-7xl md:text-[9.5rem] leading-[0.88] tracking-tighter mb-6 text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-          {heroContent.headline}
-        </h1>
-
-        {/* Floating Interactive Skill Pills */}
-        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-6 pointer-events-auto">
-          {skillPills.map((pill) => (
-            <motion.div
-              key={pill.id}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 hover:border-[var(--color-accent-matcha)] transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-default"
-            >
-              <span className="text-[10px] font-mono text-[var(--color-accent-matcha)] font-bold">
-                {pill.id}
-              </span>
-              <span className="text-xs sm:text-xs font-mono tracking-wider text-gray-200">
-                {pill.label}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Description Glass Container */}
-        <div className="inline-block p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] max-w-xl">
-          <p className="text-base sm:text-lg md:text-xl font-light text-gray-300 leading-relaxed">
-            {heroContent.description}
-          </p>
-        </div>
-      </motion.div>
       
       {/* Bottom Bar: Philosophy Card (Left) & Magnetic Scroll Pill (Right) */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-16 pb-8 md:pb-12 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
         {/* Ikigai Philosophy Quote (Bottom Left) */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -314,15 +302,15 @@ export const HeroScene = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="pointer-events-none select-none"
         >
-          <div className="inline-block p-4 sm:p-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-            <div className="flex flex-col gap-1 border-l-3 border-[var(--color-accent-warm)] pl-3.5">
-              <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-400 font-mono">
+          <div className="inline-block p-3.5 sm:p-4 rounded-xl bg-black/50 backdrop-blur-xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <div className="flex flex-col gap-0.5 border-l-2 border-[var(--color-accent-warm)] pl-3">
+              <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-gray-400 font-mono">
                 CORE PHILOSOPHY
               </span>
-              <span className="text-xl sm:text-2xl font-black text-white mt-1" style={{ fontFamily: 'var(--font-japanese)' }}>
+              <span className="text-lg sm:text-xl font-black text-white" style={{ fontFamily: 'var(--font-japanese)' }}>
                 {heroContent.backgroundQuote}
               </span>
-              <span className="text-xs italic text-gray-400">
+              <span className="text-[11px] italic text-gray-400">
                 &quot;{heroContent.quoteTranslation}&quot;
               </span>
             </div>
@@ -337,13 +325,13 @@ export const HeroScene = () => {
           transition={{ duration: 0.4 }}
           whileHover={{ scale: 1.06, y: -3 }}
           whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/15 hover:border-[var(--color-accent-matcha)] text-white/80 hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer group"
+          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/15 hover:border-[var(--color-accent-matcha)] text-white/80 hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer group mb-1 sm:mb-0"
         >
-          <span className="text-xs font-mono uppercase tracking-[0.25em] font-semibold text-gray-300 group-hover:text-[var(--color-accent-matcha)] transition-colors">
+          <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-gray-300 group-hover:text-[var(--color-accent-matcha)] transition-colors">
             {heroContent.cta} WORKS
           </span>
-          <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[var(--color-accent-matcha)] group-hover:text-black transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3 h-3 group-hover:translate-y-0.5 transition-transform">
+          <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[var(--color-accent-matcha)] group-hover:text-black transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-2.5 h-2.5 group-hover:translate-y-0.5 transition-transform">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
