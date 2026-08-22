@@ -175,16 +175,14 @@ export const projectsContent = {
       category: "Audio Processing",
       title: "SOUNDSPACE OSCILLATOR",
       description: "An interactive synthesizer mapping hand movements to complex audio signals using the Web Audio API.",
-      imagePlaceholder: "bg-[#1a0e0e]",
-      image: "/images/featured-soundspace.jpg"
+      imagePlaceholder: "bg-gradient-to-br from-[#1a0e0e] via-[#2d1115] to-[#12080a]"
     },
     {
       id: "F04",
       category: "Creative Sandbox",
       title: "KINETIC PHYSICS LAYER",
       description: "A 2D rigid-body physics playground allowing users to construct structures and trigger chain-reaction collapses.",
-      imagePlaceholder: "bg-[#0f172a]",
-      image: "/images/featured-physics.jpg"
+      imagePlaceholder: "bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#020617]"
     }
   ] as Project[]
 };

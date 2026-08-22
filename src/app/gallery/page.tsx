@@ -45,6 +45,7 @@ export default function GalleryPage() {
   const [dimensions, setDimensions] = useState({ w: 1200, h: 800 });
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -57,9 +58,18 @@ export default function GalleryPage() {
         setRadius({ rx: w * 0.25, ry: h * 0.22 });
       }
     };
+
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleResize, 100);
+    };
+
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", debouncedResize, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", debouncedResize);
+    };
   }, []);
 
   // Lock body scroll and register escape keypress listener when modal is open
@@ -208,7 +218,7 @@ export default function GalleryPage() {
               className="absolute -translate-x-1/2 -translate-y-1/2 w-20 h-15 sm:w-32 sm:h-24 md:w-52 md:h-36 rounded-md overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl cursor-pointer"
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
-              onClick={() => setSelectedItem(item as any)}
+              onClick={() => setSelectedItem(item as {type: string, url: string, quoteJP: string, quoteEN: string})}
             >
               {item.type === "photo" ? (
                 <Image 
@@ -248,7 +258,7 @@ export default function GalleryPage() {
                 {items[hoveredIdx].quoteJP}
               </h2>
               <p className="text-[10px] sm:text-xs text-[var(--color-text-secondary)] italic uppercase tracking-[0.2em] font-light">
-                "{items[hoveredIdx].quoteEN}"
+              &quot;{items[hoveredIdx].quoteEN}&quot;
               </p>
             </motion.div>
           ) : (
@@ -296,10 +306,12 @@ export default function GalleryPage() {
               onClick={(e) => e.stopPropagation()}
             >
               {selectedItem.type === "photo" ? (
-                <img 
+                <Image 
                   src={selectedItem.url} 
                   alt="Gallery Preview"
-                  className="max-w-full max-h-[75vh] object-contain shadow-2xl rounded-sm"
+                  width={1600}
+                  height={1600}
+                  className="max-w-full max-h-[75vh] w-auto h-auto object-contain shadow-2xl rounded-sm"
                 />
               ) : (
                 <video 
@@ -317,7 +329,7 @@ export default function GalleryPage() {
                   {selectedItem.quoteJP}
                 </h3>
                 <p className="text-sm md:text-base text-[var(--color-accent-matcha)] italic font-light tracking-wide uppercase">
-                  "{selectedItem.quoteEN}"
+                  &quot;{selectedItem.quoteEN}&quot;
                 </p>
               </div>
             </motion.div>

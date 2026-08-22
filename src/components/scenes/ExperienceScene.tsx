@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { experienceContent } from "@/content";
+import { experienceContent, ExperienceItem } from "@/content";
 import { CinematicTitle } from "@/components/ui/CinematicTitle";
 import { CinematicRevealText } from "@/components/ui/CinematicRevealText";
 
-const TimelineItem = ({ item, index }: { item: any; index: number }) => {
+const TimelineItem = ({ item }: { item: ExperienceItem }) => {
   const itemRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
@@ -46,12 +47,19 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => {
 
         {/* Content Column */}
         <div className="col-span-3 pb-12">
-          <div className="inline-block p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+          <div className="p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-500 hover:border-white/20 hover:bg-white/[0.07] hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
             <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
               {item.role}
             </h3>
             <h4 className={`text-lg font-medium mb-4 ${item.isEducation ? 'text-[var(--color-accent-warm)]' : 'text-[var(--color-accent-matcha)]'}`}>
-              {item.url ? (
+              {item.internalRoute ? (
+                <Link href={item.internalRoute} className="hover:underline underline-offset-4 decoration-2 transition-all inline-flex items-center gap-1.5">
+                  <span>{item.company}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+              ) : item.url ? (
                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4 decoration-2 transition-all">
                   {item.company}
                 </a>
@@ -59,9 +67,24 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => {
                 item.company
               )}
             </h4>
-            <p className="text-[var(--color-text-secondary)] leading-relaxed font-light">
+            <p className="text-[var(--color-text-secondary)] leading-relaxed font-light mb-4">
               {item.description}
             </p>
+
+            {/* Direct Project Showcase Link Button */}
+            {item.internalRoute && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <Link
+                  href={item.internalRoute}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent-matcha)] text-black font-semibold text-sm rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_15px_rgba(0,230,118,0.25)] group/btn"
+                >
+                  <span>{item.actionLabel || "View Project Showcase"}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 transition-transform group-hover/btn:translate-x-1">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -89,8 +112,8 @@ export const ExperienceScene = () => {
         </div>
 
         <div className="relative">
-          {experienceContent.items.map((item, index) => (
-            <TimelineItem key={item.id} item={item} index={index} />
+          {experienceContent.items.map((item) => (
+            <TimelineItem key={item.id} item={item as ExperienceItem} />
           ))}
         </div>
         

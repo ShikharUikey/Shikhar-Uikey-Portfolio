@@ -7,6 +7,8 @@ export interface ExperienceItem {
   description: string;
   isEducation?: boolean;
   url?: string;
+  internalRoute?: string;
+  actionLabel?: string;
 }
 
 export const experienceContent = {
@@ -20,7 +22,9 @@ export const experienceContent = {
       period: "June - July 2026",
       periodJap: "2026年6月〜7月",
       description: "Successfully completed virtual internship focused on Artificial Intelligence and Machine Learning model creation.",
-      url: "https://www.codsoft.in/"
+      url: "https://www.codsoft.in/",
+      internalRoute: "/codsoft",
+      actionLabel: "View 5 AI Projects Showcase ✨"
     },
     {
       id: "02",

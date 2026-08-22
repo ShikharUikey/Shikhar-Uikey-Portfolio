@@ -5,12 +5,14 @@ import { useState } from "react";
 import { animateSectionFadeUp } from "@/animations/engine";
 import { FlippingTitle } from "@/components/ui/FlippingTitle";
 
-const SocialLink = ({ href, icon, delay }: { href: string; icon: string; delay: number }) => {
+const SocialLink = ({ href, icon, delay, ariaLabel }: { href: string; icon: string; delay: number; ariaLabel: string }) => {
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={ariaLabel}
+      title={ariaLabel}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ 
@@ -72,7 +74,7 @@ export const ContactScene = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="px-8 py-4 md:px-10 md:py-5 rounded-full bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-[var(--color-accent-warm)] hover:text-white transition-colors duration-300 shadow-xl"
+                className="px-8 py-4 md:px-10 md:py-5 rounded-full bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-[var(--color-accent-warm)] hover:text-white transition-colors duration-300 shadow-xl cursor-pointer"
               >
                 Start a Conversation
               </motion.button>
@@ -84,9 +86,9 @@ export const ContactScene = () => {
                 exit={{ opacity: 0, y: 15 }}
                 className="flex items-center justify-center gap-6"
               >
-                <SocialLink href="https://instagram.com/" icon="instagram" delay={0} />
-                <SocialLink href="https://www.linkedin.com/in/shikharuikey/" icon="linkedin" delay={0.1} />
-                <SocialLink href="https://github.com/ShikharUikey" icon="github" delay={0.2} />
+                <SocialLink href="https://instagram.com/" icon="instagram" delay={0} ariaLabel="Follow on Instagram" />
+                <SocialLink href="https://www.linkedin.com/in/shikharuikey/" icon="linkedin" delay={0.1} ariaLabel="Connect on LinkedIn" />
+                <SocialLink href="https://github.com/ShikharUikey" icon="github" delay={0.2} ariaLabel="View GitHub Profile" />
               </motion.div>
             )}
           </AnimatePresence>

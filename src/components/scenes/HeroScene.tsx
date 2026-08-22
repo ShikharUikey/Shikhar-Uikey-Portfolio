@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { animateHeroText } from "@/animations/engine";
 import { heroContent } from "@/content";
+
+const emptySubscribe = () => () => {};
 
 const SocialBubble = ({ 
   href, 
@@ -86,14 +88,13 @@ export const HeroScene = () => {
   const [isFaceHovered, setIsFaceHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ w: 1000, h: 800 });
   const [origin, setOrigin] = useState({ x: 600, y: 350 });
-  const [time, setTime] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Smooth mouse parallax physics
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springConfig = { damping: 25, stiffness: 100 };
+  const springConfig = { damping: 30, stiffness: 120, mass: 0.1 };
   const smoothMouseX = useSpring(mouseX, springConfig);
   const smoothMouseY = useSpring(mouseY, springConfig);
 
@@ -111,7 +112,8 @@ export const HeroScene = () => {
   };
 
   useEffect(() => {
-    setIsMounted(true);
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -122,42 +124,28 @@ export const HeroScene = () => {
         setOrigin({ x: w * 0.61, y: h * 0.43 });
       }
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  // Frame tick timer loop for the breathing constellation lines
-  useEffect(() => {
-    if (!isFaceHovered) return;
-    let animationFrameId: number;
-    const tick = () => {
-      setTime(prev => prev + 0.035);
-      animationFrameId = requestAnimationFrame(tick);
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleResize, 100);
     };
-    animationFrameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [isFaceHovered]);
+
+    handleResize();
+    window.addEventListener("resize", debouncedResize, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", debouncedResize);
+    };
+  }, []);
 
   const getOffsets = () => {
     const isMobile = dimensions.w < 768;
-    const floatAmp = isMobile ? 3 : 8;
-    const float1 = isFaceHovered ? Math.sin(time) * floatAmp : 0;
-    const float2 = isFaceHovered ? Math.sin(time + 2.0) * floatAmp : 0;
-    const float3 = isFaceHovered ? Math.sin(time + 4.0) * floatAmp : 0;
-
     return {
       r1: isMobile ? 35 : 55,
       r2: isMobile ? 55 : 85,
-      insta: isMobile 
-        ? { dx: 110, dy: -70 + float1 } 
-        : { dx: 260, dy: -140 + float1 },
-      linkedin: isMobile 
-        ? { dx: 135, dy: 0 + float2 } 
-        : { dx: 320, dy: 0 + float2 },
-      github: isMobile 
-        ? { dx: 110, dy: 70 + float3 } 
-        : { dx: 260, dy: 130 + float3 }
+      insta: isMobile ? { dx: 110, dy: -70 } : { dx: 260, dy: -140 },
+      linkedin: isMobile ? { dx: 135, dy: 0 } : { dx: 320, dy: 0 },
+      github: isMobile ? { dx: 110, dy: 70 } : { dx: 260, dy: 130 }
     };
   };
 

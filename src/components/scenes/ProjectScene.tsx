@@ -8,13 +8,25 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  image?: string;
+  imagePlaceholder?: string;
+  link?: string;
+  subProjects?: { title: string; link: string }[];
+  galleryItems?: { type: string; url: string; quoteJP: string; quoteEN: string }[];
+}
+
 // Sub-component for Advanced Parallax Card face
 const CardFace = ({ 
   project, 
   isBack = false,
   activeTab
 }: { 
-  project: any; 
+  project: Project; 
   isBack?: boolean; 
   activeTab: "created" | "featured";
 }) => {
@@ -37,7 +49,7 @@ const CardFace = ({
   useEffect(() => {
     x.set(0);
     y.set(0);
-  }, [activeTab]);
+  }, [activeTab, x, y]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -58,27 +70,10 @@ const CardFace = ({
     y.set(0);
   };
 
-  const Component: any = project.link ? motion.a : motion.div;
   const isFaceActive = isBack ? activeTab === "featured" : activeTab === "created";
 
-  return (
-    <Component 
-      href={project.link}
-      target={project.link ? "_blank" : undefined}
-      rel={project.link ? "noopener noreferrer" : undefined}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ 
-        rotateX, 
-        rotateY, 
-        transformStyle: "preserve-3d",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden"
-      }}
-      className={`absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl ${
-        project.link ? 'cursor-pointer' : 'cursor-default'
-      } ${isFaceActive ? "pointer-events-auto" : "pointer-events-none"}`}
-    >
+  const cardContent = (
+    <>
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-transparent opacity-90 z-10 transition-opacity duration-500 group-hover:opacity-60"></div>
       
       {/* Dynamic Image Placeholder based on content using optimized next/image */}
@@ -138,10 +133,11 @@ const CardFace = ({
             {project.id === "01" && (
               <Link 
                 href="/codsoft" 
-                className="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] rounded-full font-bold hover:bg-[var(--color-accent-matcha)] hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent-matcha)] text-black rounded-full text-sm font-semibold hover:bg-white hover:scale-105 transition-all duration-300 shadow-md pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
               >
-                <span>View Showcase Page ✨</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <span>View CodSoft Works</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                 </svg>
               </Link>
@@ -150,10 +146,11 @@ const CardFace = ({
             {project.id === "02" && (
               <Link 
                 href="/gallery" 
-                className="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] rounded-full font-bold hover:bg-[var(--color-accent-matcha)] hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent-warm)] text-white rounded-full text-sm font-semibold hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-md pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
               >
-                <span>Enter Exhibition 🖼️</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <span>View Full Gallery ({project.galleryItems?.length || 4} photos)</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                 </svg>
               </Link>
@@ -161,7 +158,50 @@ const CardFace = ({
           </div>
         )}
       </motion.div>
-    </Component>
+    </>
+  );
+
+  if (project.link) {
+    return (
+      <motion.a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ 
+          rotateX, 
+          rotateY, 
+          transformStyle: "preserve-3d",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden"
+        }}
+        className={`absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl cursor-pointer ${
+          isFaceActive ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
+        {cardContent}
+      </motion.a>
+    );
+  }
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ 
+        rotateX, 
+        rotateY, 
+        transformStyle: "preserve-3d",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden"
+      }}
+      className={`absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] flex flex-col justify-end p-5 sm:p-8 border border-[var(--color-border)] shadow-xl cursor-default ${
+        isFaceActive ? "pointer-events-auto" : "pointer-events-none"
+      }`}
+    >
+      {cardContent}
+    </motion.div>
   );
 };
 
@@ -174,8 +214,8 @@ const ProjectCard = ({
   isFocused,
   isAnyHovered
 }: { 
-  createdProject: any; 
-  featuredProject: any; 
+  createdProject: Project; 
+  featuredProject: Project; 
   activeTab: "created" | "featured"; 
   index: number;
   isFocused: boolean;

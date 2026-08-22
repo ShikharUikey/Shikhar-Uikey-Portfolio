@@ -1,32 +1,33 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 
 export const CinematicRevealText = ({ 
   children, 
   revealText, 
   textSizeClass = "text-6xl sm:text-7xl md:text-9xl",
   maskRadius = 120,
-  revealFontFamily = "var(--font-japanese)"
+  revealFontFamily = "var(--font-japanese)",
+  trackingClass = "tracking-wide"
 }: { 
   children: React.ReactNode; 
   revealText: string;
   textSizeClass?: string;
   maskRadius?: number;
   revealFontFamily?: string;
+  trackingClass?: string;
 }) => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    containerRef.current.style.setProperty("--reveal-x", `${x}px`);
+    containerRef.current.style.setProperty("--reveal-y", `${y}px`);
+  }, []);
 
   return (
     <div
@@ -34,6 +35,11 @@ export const CinematicRevealText = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{
+        // Default initial coordinates
+        ["--reveal-x" as string]: "50%",
+        ["--reveal-y" as string]: "50%",
+      }}
       className="relative w-full"
     >
       {/* Base Layer: The English paragraph text */}
@@ -41,10 +47,10 @@ export const CinematicRevealText = ({
         className="relative z-10 transition-all duration-300"
         style={{
           WebkitMaskImage: isHovered 
-            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 50%, black 100%)` 
+            ? `radial-gradient(circle ${maskRadius}px at var(--reveal-x) var(--reveal-y), transparent 50%, black 100%)` 
             : "none",
           maskImage: isHovered 
-            ? `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, transparent 50%, black 100%)` 
+            ? `radial-gradient(circle ${maskRadius}px at var(--reveal-x) var(--reveal-y), transparent 50%, black 100%)` 
             : "none",
         }}
       >
@@ -57,12 +63,12 @@ export const CinematicRevealText = ({
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-20"
       >
         <span 
-          className={`${textSizeClass} font-black text-[var(--color-accent-warm)] tracking-widest transition-opacity duration-300 text-center block w-full`}
+          className={`${textSizeClass} ${trackingClass} font-black text-[var(--color-accent-warm)] transition-opacity duration-300 text-center block w-full`}
           style={{
             fontFamily: revealFontFamily,
             opacity: isHovered ? 1.0 : 0,
-            WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,
-            maskImage: `radial-gradient(circle ${maskRadius}px at ${mousePos.x}px ${mousePos.y}px, black 50%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(circle ${maskRadius}px at var(--reveal-x) var(--reveal-y), black 50%, transparent 100%)`,
+            maskImage: `radial-gradient(circle ${maskRadius}px at var(--reveal-x) var(--reveal-y), black 50%, transparent 100%)`,
           }}
         >
           {revealText}
