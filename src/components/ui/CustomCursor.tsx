@@ -66,17 +66,17 @@ export const CustomCursor = () => {
       }}
       animate={{
         scale: isHovering ? 2.2 : 1,
-        backgroundColor: isHovering ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.08)",
+        backgroundColor: isHovering ? "rgba(255, 252, 225, 0.95)" : "rgba(255, 252, 225, 0.05)",
       }}
       transition={{
         scale: { type: "spring", stiffness: 350, damping: 20 },
         backgroundColor: { duration: 0.15 },
       }}
-      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[var(--color-accent-warm)] pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center backdrop-blur-xs will-change-transform"
+      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#fffce1] pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center backdrop-blur-xs will-change-transform"
     >
       {/* Inner dot */}
       <motion.div 
-        className="w-1 h-1 bg-[var(--color-accent-warm)] rounded-full"
+        className="w-1.5 h-1.5 bg-[#0ae448] rounded-full"
         animate={{
           opacity: isHovering ? 0 : 1,
         }}

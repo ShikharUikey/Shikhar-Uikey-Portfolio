@@ -1,18 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { aboutContent } from "@/content";
 import { CinematicTitle } from "@/components/ui/CinematicTitle";
 import { CinematicRevealText } from "@/components/ui/CinematicRevealText";
-
-// Dynamic import with ssr: false for ultra-fast initial page bundle
-const GlowingParticleField3D = dynamic(
-  () => import("@/components/ui/GlowingParticleField3D").then((mod) => mod.GlowingParticleField3D),
-  { ssr: false }
-);
 
 export const AboutScene = () => {
   const containerRef = useRef(null);
@@ -56,9 +49,6 @@ export const AboutScene = () => {
       ref={containerRef}
       className="cinematic-section bg-[#060608] border-y border-[var(--color-border)] min-h-screen md:min-h-[120vh] flex items-center relative snap-start overflow-hidden"
     >
-      {/* Real-time 3D Movable Glowing Particle Swarm Canvas */}
-      <GlowingParticleField3D />
-
       {/* Atmospheric Radial Gradients & Vignette */}
       <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
         <div className="absolute top-1/3 -left-32 w-[35rem] h-[35rem] rounded-full bg-[#00F0FF] opacity-[0.05] blur-[150px]" />
@@ -66,8 +56,8 @@ export const AboutScene = () => {
         
         {/* Technical Coordinate Markers */}
         <div className="absolute top-12 left-10 text-[10px] font-mono tracking-[0.25em] text-white/30 flex flex-col gap-1">
-          <span className="text-[#00F0FF] font-bold">[ 3D NEURAL SWARM // ACTIVE ]</span>
-          <span>PARTICLES: 12,000 • INSTANCED PHYSX</span>
+          <span className="text-[#00F0FF] font-bold">[ CREATIVE ARCHIVE // SECTION 02 ]</span>
+          <span>IDENTITY &amp; PHILOSOPHY</span>
         </div>
         <div className="absolute top-12 right-10 text-[10px] font-mono tracking-[0.25em] text-white/30 flex flex-col gap-1 text-right">
           <span className="text-[#00F0FF] font-bold">GRID 28°36&apos;N 77°12&apos;E</span>

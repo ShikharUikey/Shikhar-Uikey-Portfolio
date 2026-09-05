@@ -1,55 +1,195 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #050505;
-  --color-bg-secondary: #111111;
-  --color-text-primary: #FAFAFA;
-  --color-text-secondary: #A1A1AA;
-  --color-accent-warm: #FF3366;
-  --color-accent-matcha: #00E676;
-  --color-border: #222222;
-  
-  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-cursive: 'Caveat', cursive;
+  /* Colors */
+  --color-just-black: #0e100f;
+  --color-surface-cream: #fffce1;
+  --color-surface-50: #7c7c6f;
+  --color-surface-25: #42433d;
+  --color-off-black: #191919;
+  --color-shockingly-green: #0ae448;
+  --color-light-green: #abff84;
+  --color-orangey: #ff8709;
+  --color-pink: #fec5fb;
+  --color-lilac: #9d95ff;
+  --color-blue: #00bae2;
+  --color-core-green: #dfffd1;
+  --color-lipstick-pink: #f100cb;
+
+  /* Typography */
+  --font-mori: var(--font-mori), 'Mori', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-japanese: 'Kaisei Opti', 'Shippori Mincho', 'Noto Serif JP', serif;
   --font-hindi: 'Rozha One', 'Yatra One', serif;
+  --font-cursive: 'Caveat', cursive;
 }
 
 :root {
-  --background: #050505;
-  --foreground: #FAFAFA;
+  /* Semantic aliases */
+  --background: #0e100f;
+  --foreground: #fffce1;
+
+  /* Direct CSS custom properties (usable in arbitrary values) */
+  --color-just-black: #0e100f;
+  --color-surface-cream: #fffce1;
+  --color-surface-50: #7c7c6f;
+  --color-surface-25: #42433d;
+  --color-off-black: #191919;
+  --color-shockingly-green: #0ae448;
+  --gradient-shockingly-green: linear-gradient(114.41deg, #0ae448 20.74%, #abff84 65.5%);
+  --color-light-green: #abff84;
+  --color-orangey: #ff8709;
+  --color-pink: #fec5fb;
+  --color-lilac: #9d95ff;
+  --color-blue: #00bae2;
+  --color-core-green: #dfffd1;
+  --color-lipstick-pink: #f100cb;
 }
 
 html {
   scroll-snap-type: y proximity;
   scroll-behavior: smooth;
+  background-color: var(--color-just-black);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  background-color: var(--color-just-black);
+  color: var(--color-surface-cream);
+  font-family: var(--font-mori);
   overflow-x: hidden;
-  /* Smooth transitions for theme switching if needed */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  letter-spacing: -0.01em;
 }
 
-/* Custom Scrollbar for a premium feel */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--color-just-black);
 }
 ::-webkit-scrollbar-thumb {
-  background: #D3CDC4;
-  border-radius: 4px;
+  background: var(--color-surface-25);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #AFA89D;
+  background: var(--color-surface-50);
 }
 
-/* Base Utility Classes for Narrative Flow */
+/* GSAP Design System Controls */
+
+/* 1. Outlined Cream Pill Button (Strict GSAP standard) */
+.btn-pill-cream {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 100px;
+  border: 1px solid var(--color-surface-cream);
+  background-color: transparent;
+  color: var(--color-surface-cream);
+  padding: 0.85rem 1.6rem;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-pill-cream:hover {
+  background-color: rgba(255, 252, 225, 0.1);
+  transform: translateY(-1px);
+}
+
+/* 2. Gradient-Stroked CTA Pill (Exclusive Primary Action) */
+.btn-pill-gradient {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--color-surface-cream);
+  padding: 0.85rem 1.6rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-pill-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  padding: 1.5px;
+  background: linear-gradient(114.41deg, #0ae448 20.74%, #abff84 65.5%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.btn-pill-gradient:hover {
+  background-color: rgba(10, 228, 72, 0.08);
+  transform: translateY(-1px);
+}
+
+/* 3. Hairline Section Divider */
+.hairline-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-surface-25);
+  border: none;
+  margin: 0;
+}
+
+/* 4. Curly-Bracket Eyebrow Annotation */
+.curly-eyebrow {
+  font-size: 1.125rem; /* 18px */
+  color: var(--color-surface-cream);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* 5. Ghost Nav Link */
+.ghost-nav-link {
+  color: var(--color-surface-50);
+  font-size: 1rem; /* 16px */
+  font-weight: 400;
+  line-height: 1.15;
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+.ghost-nav-link:hover,
+.ghost-nav-link.active {
+  color: var(--color-surface-cream);
+}
+
+/* Subtle Film Grain (Preserved for cinematic texture) */
+.film-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Float-gentle for social bubble hover effect */
+@keyframes float-gentle {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-6px); }
+}
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* Section base — used by scenes */
 .cinematic-section {
   min-height: 100vh;
   display: flex;
@@ -59,67 +199,28 @@ body {
   padding: 2rem 1rem;
   scroll-snap-align: start;
 }
-
 @media (min-width: 768px) {
   .cinematic-section {
     padding: 4rem 2rem;
   }
 }
 
+/* Japanese / ikigai vertical text */
 .ikigai-quote {
-  font-family: var(--font-japanese), var(--font-sans), sans-serif;
+  font-family: var(--font-japanese), var(--font-mori), sans-serif;
   writing-mode: vertical-rl;
   text-orientation: upright;
   letter-spacing: 0.5em;
-  opacity: 0.1;
+  opacity: 0.08;
   position: absolute;
   top: 10%;
   right: 5%;
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 700;
   pointer-events: none;
+  color: var(--color-surface-50);
 }
-
-.cursive-accent {
-  font-family: var(--font-cursive), cursive;
-  color: var(--color-accent-warm);
-}
-
-/* Camera Focus Effect Signature Element */
-.camera-focus-container {
-  transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-/* Subtle Camera Focus Transition properties */
-.focus-item {
-  transition: filter 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
-}
-
-/* Mobile ikigai quote adjustments */
 @media (max-width: 767px) {
-  .ikigai-quote {
-    display: none;
-  }
+  .ikigai-quote { display: none; }
 }
 
-/* Subtle Cinematic Film Grain Overlay */
-.film-grain {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.035; /* Perfectly balanced subtle grain */
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* Custom float-gentle for centered social handles */
-@keyframes float-gentle {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateY(-6px); }
-}
-.animate-float-gentle {
-  animation: float-gentle 4s ease-in-out infinite;
-}

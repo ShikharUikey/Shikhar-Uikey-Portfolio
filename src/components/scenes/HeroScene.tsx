@@ -189,7 +189,7 @@ export const HeroScene = () => {
     <section 
       ref={containerRef}
       onMouseMove={handleGlobalMouseMove}
-      className="h-screen flex flex-col justify-between relative overflow-hidden bg-[#050505] snap-start select-none pt-24 pb-8 md:pb-12"
+      className="h-screen flex flex-col justify-between relative overflow-hidden bg-[#0e100f] snap-start select-none pt-24 pb-8 md:pb-12"
     >
       {/* Background Image Parallax Setup */}
       <motion.div 
@@ -203,20 +203,20 @@ export const HeroScene = () => {
           priority
           className="object-cover object-[75%_center] md:object-center opacity-90 transition-opacity duration-1000"
         />
-        {/* Cinematic Vignette & Ambient Gradient for Maximum Left-Side Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent lg:w-[75%]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-transparent to-black/40" />
+        {/* Cinematic Vignette — gradient depth, no box-shadow per GSAP spec */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0e100f]/95 via-[#0e100f]/60 to-transparent lg:w-[75%]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0e100f] via-transparent to-[#0e100f]/40" />
       </motion.div>
 
-      {/* Atmospheric Floating Light Specks / Bokeh Dust */}
+      {/* Atmospheric Bokeh Dust — GSAP discipline colors */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-        <div className="absolute top-[25%] left-[15%] w-1.5 h-1.5 rounded-full bg-[var(--color-accent-matcha)] opacity-40 blur-[1px] animate-ping" style={{ animationDuration: "4s" }} />
-        <div className="absolute top-[65%] left-[20%] w-1 h-1 rounded-full bg-white opacity-30 blur-[0.5px] animate-pulse" style={{ animationDuration: "3s" }} />
-        <div className="absolute top-[40%] right-[25%] w-2 h-2 rounded-full bg-[var(--color-accent-warm)] opacity-35 blur-[1px] animate-pulse" style={{ animationDuration: "5s" }} />
+        <div className="absolute top-[25%] left-[15%] w-1.5 h-1.5 rounded-full bg-[#0ae448] opacity-40 blur-[1px] animate-ping" style={{ animationDuration: "4s" }} />
+        <div className="absolute top-[65%] left-[20%] w-1 h-1 rounded-full bg-[#fffce1] opacity-25 blur-[0.5px] animate-pulse" style={{ animationDuration: "3s" }} />
+        <div className="absolute top-[40%] right-[25%] w-2 h-2 rounded-full bg-[#fec5fb] opacity-30 blur-[1px] animate-pulse" style={{ animationDuration: "5s" }} />
       </div>
 
-      {/* Main Content Container (Left Aligned, Clear of Portrait) */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 my-auto flex flex-col items-start">
+      {/* Main Content Container */}
+      <div className="relative z-20 w-full max-w-[1280px] mx-auto px-6 md:px-12 lg:px-16 my-auto flex flex-col items-start">
         <motion.div 
           style={{ x: textParallaxX, y: textParallaxY }}
           className="w-full lg:max-w-2xl text-left pointer-events-none select-none will-change-transform"
@@ -229,58 +229,51 @@ export const HeroScene = () => {
           variants={animateHeroText}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4 pointer-events-auto">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-accent-matcha)] animate-pulse shadow-[0_0_8px_var(--color-accent-matcha)]" />
-            <span className="text-[11px] font-mono tracking-widest text-white/80 font-medium uppercase">
-              AVAILABLE FOR COMMISSIONS • 2026
+          {/* Curly-Bracket Eyebrow — GSAP editorial signature */}
+          <div className="inline-flex items-center gap-2.5 mb-5 pointer-events-auto">
+            <span className="curly-eyebrow text-[#7c7c6f]">
+              {'{ Creative Technologist & Visual Architect }'}
             </span>
           </div>
 
-          {/* Eyebrow / Subheadline */}
-          <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-6 h-[1.5px] bg-[var(--color-accent-warm)]" />
-            <h2 className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[var(--color-accent-warm)] font-semibold">
-              {heroContent.subheadline}
-            </h2>
-          </div>
-
-          {/* Hero Title */}
-          <h1 className="italic font-black text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.92] tracking-tighter mb-5 text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.9)]">
+          {/* GSAP Hero Headline — massive weight-600 cream type */}
+          <h1 className="font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[0.92] tracking-tighter mb-6 text-[#fffce1]">
             {heroContent.headline}
           </h1>
 
-          {/* Floating Interactive Skill Pills */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-5 pointer-events-auto">
-            {skillPills.map((pill) => (
-              <motion.div
-                key={pill.id}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 hover:border-[var(--color-accent-matcha)] transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-default"
-              >
-                <span className="text-[10px] font-mono text-[var(--color-accent-matcha)] font-bold">
-                  {pill.id}
-                </span>
-                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-gray-200">
-                  {pill.label}
-                </span>
-              </motion.div>
-            ))}
+          {/* Discipline Color Tags — GSAP 5-color taxonomy */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6 pointer-events-auto">
+            <span className="text-[13px] font-medium tracking-wide" style={{ color: "#0ae448" }}>Core</span>
+            <span className="text-[#42433d]">·</span>
+            <span className="text-[13px] font-medium tracking-wide" style={{ color: "#ff8709" }}>Cinema</span>
+            <span className="text-[#42433d]">·</span>
+            <span className="text-[13px] font-medium tracking-wide" style={{ color: "#fec5fb" }}>Motion</span>
+            <span className="text-[#42433d]">·</span>
+            <span className="text-[13px] font-medium tracking-wide" style={{ color: "#9d95ff" }}>AI</span>
+            <span className="text-[#42433d]">·</span>
+            <span className="text-[13px] font-medium tracking-wide" style={{ color: "#00bae2" }}>Web</span>
           </div>
 
-          {/* Description Glass Container */}
-          <div className="inline-block p-4 sm:p-5 rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] max-w-lg">
-            <p className="text-sm sm:text-base md:text-lg font-light text-gray-300 leading-relaxed">
-              {heroContent.description}
-            </p>
+          {/* Description — surface-cream body text, no card border, no shadow */}
+          <p className="text-[17px] font-normal text-[#7c7c6f] leading-[1.38] max-w-lg tracking-[-0.01em]">
+            {heroContent.description}
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3 mt-7 pointer-events-auto">
+            <a href="#work" className="btn-pill-cream text-[15px] !py-2 !px-5">
+              Discover Works
+            </a>
+            <a href="#contact" className="btn-pill-gradient text-[15px] !py-2 !px-5">
+              <span>{'{ Contact }'}</span>
+            </a>
           </div>
         </motion.div>
       </div>
       
-      {/* Bottom Bar: Philosophy Card (Left) & Magnetic Scroll Pill (Right) */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-        {/* Ikigai Philosophy Quote (Bottom Left) */}
+      {/* Bottom Bar */}
+      <div className="relative z-20 w-full max-w-[1280px] mx-auto px-6 md:px-12 lg:px-16 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+        {/* Philosophy Quote (Bottom Left) */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ 
@@ -290,39 +283,32 @@ export const HeroScene = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="pointer-events-none select-none"
         >
-          <div className="inline-block p-3.5 sm:p-4 rounded-xl bg-black/50 backdrop-blur-xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-            <div className="flex flex-col gap-0.5 border-l-2 border-[var(--color-accent-warm)] pl-3">
-              <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-gray-400 font-mono">
-                CORE PHILOSOPHY
-              </span>
-              <span className="text-lg sm:text-xl font-black text-white" style={{ fontFamily: 'var(--font-japanese)' }}>
-                {heroContent.backgroundQuote}
-              </span>
-              <span className="text-[11px] italic text-gray-400">
-                &quot;{heroContent.quoteTranslation}&quot;
-              </span>
+          <div className="inline-block border-l border-[#42433d] pl-3">
+            <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#42433d]">
+              CORE PHILOSOPHY
+            </span>
+            <div className="text-lg sm:text-xl font-semibold text-[#fffce1] mt-0.5" style={{ fontFamily: 'var(--font-japanese)' }}>
+              {heroContent.backgroundQuote}
             </div>
+            <span className="text-[11px] text-[#7c7c6f] italic">
+              &quot;{heroContent.quoteTranslation}&quot;
+            </span>
           </div>
         </motion.div>
 
-        {/* Magnetic Interactive Scroll CTA (Bottom Right) */}
+        {/* Scroll CTA (Bottom Right) — outlined cream pill */}
         <motion.a
           href="#work"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: isFaceHovered ? 0 : 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          whileHover={{ scale: 1.06, y: -3 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/15 hover:border-[var(--color-accent-matcha)] text-white/80 hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer group mb-1 sm:mb-0"
+          whileHover={{ y: -2 }}
+          className="btn-pill-cream text-[13px] !py-2 !px-5 mb-1 sm:mb-0"
         >
-          <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-gray-300 group-hover:text-[var(--color-accent-matcha)] transition-colors">
-            {heroContent.cta} WORKS
-          </span>
-          <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[var(--color-accent-matcha)] group-hover:text-black transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-2.5 h-2.5 group-hover:translate-y-0.5 transition-transform">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
-          </div>
+          <span className="font-mono uppercase tracking-[0.15em]">{heroContent.cta} Works</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
         </motion.a>
       </div>
 
@@ -343,7 +329,7 @@ export const HeroScene = () => {
           <motion.path 
             d={pathInner}
             fill="none"
-            stroke="rgba(0, 230, 118, 0.75)"
+            stroke="rgba(10, 228, 72, 0.75)"
             strokeWidth={1.8}
             filter="url(#glow-accent)"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -358,7 +344,7 @@ export const HeroScene = () => {
           <motion.path 
             d={pathOuter}
             fill="none"
-            stroke="rgba(0, 230, 118, 0.75)"
+            stroke="rgba(10, 228, 72, 0.75)"
             strokeWidth={1.8}
             filter="url(#glow-accent)"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -373,7 +359,7 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx1} y1={sy1}
             x2={ex1} y2={ey1}
-            stroke="rgba(0, 230, 118, 0.75)"
+            stroke="rgba(10, 228, 72, 0.75)"
             strokeWidth={1.5}
             strokeDasharray="6 6"
             filter="url(#glow-accent)"
@@ -389,7 +375,7 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx2} y1={sy2}
             x2={ex2} y2={ey2}
-            stroke="rgba(0, 230, 118, 0.75)"
+            stroke="rgba(10, 228, 72, 0.75)"
             strokeWidth={1.5}
             strokeDasharray="6 6"
             filter="url(#glow-accent)"
@@ -405,7 +391,7 @@ export const HeroScene = () => {
           <motion.line 
             x1={sx3} y1={sy3}
             x2={ex3} y2={ey3}
-            stroke="rgba(0, 230, 118, 0.75)"
+            stroke="rgba(10, 228, 72, 0.75)"
             strokeWidth={1.5}
             strokeDasharray="6 6"
             filter="url(#glow-accent)"

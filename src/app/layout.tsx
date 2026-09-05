@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Caveat, Kaisei_Opti, Rozha_One } from "next/font/google";
+import { DM_Sans, Caveat, Kaisei_Opti, Rozha_One } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { Navbar } from "@/components/ui/Navbar";
 import { Preloader } from "@/components/ui/Preloader";
 import "./globals.css";
 
-const inter = Inter({ 
+const mori = DM_Sans({ 
   subsets: ["latin"],
-  variable: "--font-inter", 
+  variable: "--font-mori", 
   display: "swap",
 });
 
@@ -32,7 +32,7 @@ const rozhaOne = Rozha_One({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#0e100f",
   width: "device-width",
   initialScale: 1,
 };
@@ -64,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${caveat.variable} ${kaiseiOpti.variable} ${rozhaOne.variable} font-sans antialiased selection:bg-[#E87A5D] selection:text-white md:cursor-none`}
+        className={`${mori.variable} ${caveat.variable} ${kaiseiOpti.variable} ${rozhaOne.variable} font-sans antialiased selection:bg-[#fffce1] selection:text-[#0e100f] md:cursor-none bg-[#0e100f] text-[#fffce1]`}
       >
         <div className="film-grain" />
         <Preloader />
